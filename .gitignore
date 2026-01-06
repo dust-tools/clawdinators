@@ -1,0 +1,15 @@
+# OpenTofu
+infra/opentofu/.terraform/
+infra/opentofu/.tofu/
+infra/opentofu/*.tfstate
+infra/opentofu/*.tfstate.backup
+infra/opentofu/*.tfvars
+infra/opentofu/*.auto.tfvars
+!infra/opentofu/example.tfvars
+
+# Secrets
+*.env
+
+# Nix build outputs
+result
+result-*
