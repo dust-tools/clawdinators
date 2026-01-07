@@ -12,7 +12,7 @@
   networking.useDHCP = false;
   systemd.network.enable = true;
   systemd.network.networks."10-ethernet" = {
-    matchConfig.Name = "en* eth*";
+    matchConfig.Name = [ "en*" "eth*" ];
     networkConfig.DHCP = "yes";
   };
   services.openssh.enable = true;
