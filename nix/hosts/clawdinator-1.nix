@@ -33,6 +33,9 @@
 
   services.openssh.enable = true;
   networking.firewall.allowedTCPPorts = [ 22 18789 ];
+  users.users.root.openssh.authorizedKeys.keys = [
+    "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIOLItFT3SVm5r7gELrfRRJxh6V2sf/BIx7HKXt6oVWpB"
+  ];
 
   age.identityPaths = [ "/etc/ssh/ssh_host_ed25519_key" ];
   age.secrets."clawdinator-github-app.pem".file =
