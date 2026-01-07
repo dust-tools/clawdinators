@@ -8,5 +8,5 @@ output "aws_region" {
 
 output "ci_user_name" {
   value       = data.aws_iam_user.ci_user.user_name
-  description = "Existing IAM user expected to be wired in CI."
+  description = "IAM user expected to be wired in CI."
 }

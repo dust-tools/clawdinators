@@ -53,4 +53,4 @@ Deploy flow (automation-first):
 Key principle: mental notes don’t survive restarts — write it to a file.
 
 Cattle vs pets: hosts are disposable. Prefer re-provisioning from OpenTofu + NixOS configs over in-place manual fixes.
-One way only: AWS AMI pipeline via S3 + VM Import. No Hetzner, no rescue-mode hacks, no legacy paths.
+One way only: AWS AMI pipeline via S3 + VM Import. This is a greenfield repo. Do not reference "existing", "legacy", or alternate paths anywhere in code or docs.

@@ -4,13 +4,13 @@ variable "aws_region" {
 }
 
 variable "bucket_name" {
-  description = "Existing S3 bucket name for image uploads."
+  description = "S3 bucket name for image uploads."
   type        = string
   default     = "clawdinator-images-eu1-20260107165216"
 }
 
 variable "ci_user_name" {
-  description = "Existing IAM user used by CI (keys already wired in GitHub)."
+  description = "IAM user used by CI."
   type        = string
   default     = "clawdinator-image-uploader"
 }
