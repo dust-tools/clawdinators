@@ -25,7 +25,7 @@ zstd -c "${img_path}" > "${zst_path}"
 timestamp="$(date -u +%Y%m%d-%H%M%S)"
 object_key="${prefix}/nixos-${timestamp}.img.zst"
 
-aws s3 cp "${zst_path}" "s3://${bucket}/${object_key}" --region "${region}"
+aws s3 cp "${zst_path}" "s3://${bucket}/${object_key}" --region "${region}" --only-show-errors 1>&2
 rm -rf "${tmp_dir}"
 
 if [ -n "${S3_PUBLIC_URL:-}" ]; then
