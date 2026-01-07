@@ -43,7 +43,7 @@ Deploy flow (automation-first):
 - CI is preferred: `.github/workflows/image-build.yml` runs build → S3 upload → AMI import.
 - Bootstrap S3 bucket + scoped IAM user + VM Import role with `infra/opentofu/aws` (use homelab-admin creds).
 - Bootstrap AWS instances from the AMI with `infra/opentofu/aws` (set `TF_VAR_ami_id`).
-- Import the image into AWS as an AMI (`aws ec2 import-image`).
+- Import the image into AWS as an AMI (snapshot import + register image).
 - Grab the host SSH key and add it to `../nix/nix-secrets/secrets.nix`; rekey secrets with agenix.
 - Ensure required secrets exist: `clawdinator-github-app.pem`, `clawdinator-discord-token`, `clawdinator-anthropic-api-key`.
 - Update `nix/hosts/<host>.nix` (Discord allowlist, GitHub App installationId, identity name).

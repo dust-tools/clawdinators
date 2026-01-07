@@ -33,13 +33,11 @@ ami_name="${AMI_NAME:-clawdinator-nixos-${timestamp}}"
 ami_description="${AMI_DESCRIPTION:-clawdinator-nixos}"
 
 task_id="$(
-  aws ec2 import-image \
+  aws ec2 import-snapshot \
     --region "${region}" \
     --description "${ami_description}" \
-    --boot-mode "${boot_mode}" \
-    --architecture "${arch}" \
     --role-name "vmimport" \
-    --disk-containers "Format=${format},UserBucket={S3Bucket=${bucket},S3Key=${key}}" \
+    --disk-container "Format=${format},UserBucket={S3Bucket=${bucket},S3Key=${key}}" \
     --query 'ImportTaskId' \
     --output text
 )"
@@ -50,35 +48,54 @@ if [ -z "${task_id}" ] || [ "${task_id}" = "None" ]; then
 fi
 
 for _ in {1..120}; do
-  status="$(aws ec2 describe-import-image-tasks \
+  status="$(aws ec2 describe-import-snapshot-tasks \
     --region "${region}" \
     --import-task-ids "${task_id}" \
-    --query 'ImportImageTasks[0].Status' \
+    --query 'ImportSnapshotTasks[0].SnapshotTaskDetail.Status' \
     --output text)"
 
   case "${status}" in
     completed)
-      image_id="$(aws ec2 describe-import-image-tasks \
+      snapshot_id="$(aws ec2 describe-import-snapshot-tasks \
         --region "${region}" \
         --import-task-ids "${task_id}" \
-        --query 'ImportImageTasks[0].ImageId' \
+        --query 'ImportSnapshotTasks[0].SnapshotTaskDetail.SnapshotId' \
         --output text)"
-      if [ -n "${image_id}" ] && [ "${image_id}" != "None" ]; then
-        aws ec2 create-tags \
-          --region "${region}" \
-          --resources "${image_id}" \
-          --tags "Key=Name,Value=${ami_name}" "Key=clawdinator,Value=true"
-        echo "${image_id}"
-        exit 0
+      if [ -z "${snapshot_id}" ] || [ "${snapshot_id}" = "None" ]; then
+        echo "Import completed but SnapshotId is missing." >&2
+        exit 1
       fi
-      echo "Import completed but ImageId is missing." >&2
-      exit 1
+
+      image_id="$(aws ec2 register-image \
+        --region "${region}" \
+        --name "${ami_name}" \
+        --description "${ami_description}" \
+        --architecture "${arch}" \
+        --boot-mode "${boot_mode}" \
+        --virtualization-type hvm \
+        --ena-support \
+        --root-device-name /dev/xvda \
+        --block-device-mappings "DeviceName=/dev/xvda,Ebs={SnapshotId=${snapshot_id},DeleteOnTermination=true}" \
+        --query 'ImageId' \
+        --output text)"
+
+      if [ -z "${image_id}" ] || [ "${image_id}" = "None" ]; then
+        echo "Register-image failed to return ImageId." >&2
+        exit 1
+      fi
+
+      aws ec2 create-tags \
+        --region "${region}" \
+        --resources "${image_id}" \
+        --tags "Key=Name,Value=${ami_name}" "Key=clawdinator,Value=true"
+      echo "${image_id}"
+      exit 0
       ;;
     deleted|deleting|error)
-      message="$(aws ec2 describe-import-image-tasks \
+      message="$(aws ec2 describe-import-snapshot-tasks \
         --region "${region}" \
         --import-task-ids "${task_id}" \
-        --query 'ImportImageTasks[0].StatusMessage' \
+        --query 'ImportSnapshotTasks[0].SnapshotTaskDetail.StatusMessage' \
         --output text)"
       echo "Import failed: ${status} - ${message}" >&2
       exit 1
