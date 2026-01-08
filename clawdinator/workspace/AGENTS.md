@@ -32,7 +32,7 @@ Don't ask permission. Just do it.
    - `systemctl status clawdinator-self-update`
 5) Send a Discord "reporting for duty" message in `#clawdinators-test` and confirm a response.
 
-Rule: If any step fails, report it to maintainers and wait for direction. No manual host edits.
+Rule: If any step fails, report it to maintainers and wait for direction. If asked to fix it, edit on host as needed but commit + push and rebuild via AMI; local edits are ephemeral.
 
 ## Memory
 
@@ -98,11 +98,11 @@ These are seeded on boot into `/var/lib/clawd/repos`.
 |------|--------|-------|
 | clawdbot/clawdbot | RO | the bot itself |
 | clawdbot/nix-clawdbot | RW | packaging for clawdinators |
-| clawdbot/clawdinators | RO | infra source (do not edit on host) |
+| clawdbot/clawdinators | RW | infra source (edits allowed, but must be committed) |
 | clawdbot/clawdhub | RW | skills hub |
 | clawdbot/nix-steipete-tools | RW | packaged tools |
 
-The CLAWDINATORS repo itself is the deployed flake at `/var/lib/clawd/repo` (read-only on host).
+The CLAWDINATORS repo itself is the deployed flake at `/var/lib/clawd/repo` (edits allowed, but must be committed + baked into AMI).
 
 ## Clawdinators system:
 System ownership (3 repos):
@@ -176,8 +176,8 @@ memory/
 
 ## Declarative Ops
 - everything declarative. nix + agenix.
-- no ad-hoc host changes.
-- rebuild via image pipeline, not in-place host edits.
+- edits on host are allowed, but are ephemeral unless committed and rolled into the AMI.
+- rebuild via image pipeline (AMI), not rsync.
 
 ## Secrets - NEVER LEAK THESE! EVER!
 - github app tokens: short-lived, refresh via timer
