@@ -59,6 +59,7 @@ Bootstrap (local):
   - `TF_VAR_aws_region=eu-central-1`
   - `TF_VAR_ami_id=ami-...` (empty string skips instance creation)
   - `TF_VAR_ssh_public_key="$(cat ~/.ssh/id_ed25519.pub)"` (required when ami_id is set)
+  - `TF_VAR_root_volume_size_gb=40` (bump if Nix store runs out of space)
 - Run `tofu init` + `tofu apply` in `infra/opentofu/aws`.
 - After apply, update CI secrets from outputs:
   - `tofu output -raw access_key_id` → `clawdinator-image-uploader-access-key-id.age`
@@ -68,6 +69,7 @@ Bootstrap (local):
   - Then `gh secret set` for `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `S3_BUCKET`.
 - Get the latest AMI ID:
   - `aws ec2 describe-images --region eu-central-1 --owners self --filters "Name=tag:clawdinator,Values=true" --query "Images | sort_by(@,&CreationDate)[-1].[ImageId,Name,CreationDate]" --output text`
+- If SSH access is lost, use SSM (instance profile is attached via OpenTofu) to re-add `/root/.ssh/authorized_keys`.
 
 Key principle: mental notes don’t survive restarts — write it to a file.
 

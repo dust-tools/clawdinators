@@ -39,6 +39,12 @@ variable "instance_type" {
   default     = "t3.small"
 }
 
+variable "root_volume_size_gb" {
+  description = "Root EBS volume size in GiB."
+  type        = number
+  default     = 40
+}
+
 variable "ssh_public_key" {
   description = "SSH public key for the CLAWDINATOR operator."
   type        = string

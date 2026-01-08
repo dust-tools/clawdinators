@@ -146,6 +146,33 @@ resource "aws_iam_user_policy" "ami_importer" {
   policy = data.aws_iam_policy_document.ami_importer.json
 }
 
+data "aws_iam_policy_document" "instance_assume" {
+  statement {
+    actions = ["sts:AssumeRole"]
+    principals {
+      type        = "Service"
+      identifiers = ["ec2.amazonaws.com"]
+    }
+  }
+}
+
+resource "aws_iam_role" "instance" {
+  name               = "clawdinator-instance"
+  assume_role_policy = data.aws_iam_policy_document.instance_assume.json
+  tags               = local.tags
+}
+
+resource "aws_iam_role_policy_attachment" "instance_ssm" {
+  role       = aws_iam_role.instance.name
+  policy_arn = "arn:aws:iam::aws:policy/AmazonSSMManagedInstanceCore"
+}
+
+resource "aws_iam_instance_profile" "instance" {
+  name = "clawdinator-instance"
+  role = aws_iam_role.instance.name
+  tags = local.tags
+}
+
 data "aws_vpc" "default" {
   default = true
 }
@@ -210,6 +237,12 @@ resource "aws_instance" "clawdinator" {
   vpc_security_group_ids      = [aws_security_group.clawdinator[0].id]
   key_name                    = aws_key_pair.operator[0].key_name
   associate_public_ip_address = true
+  iam_instance_profile        = aws_iam_instance_profile.instance.name
+
+  root_block_device {
+    volume_size = var.root_volume_size_gb
+    volume_type = "gp3"
+  }
 
   tags = merge(local.tags, {
     Name = var.instance_name
