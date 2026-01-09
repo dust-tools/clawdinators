@@ -4,6 +4,8 @@
     "/var/lib/clawd/nix-secrets/clawdinator-github-app.pem.age";
   age.secrets."clawdinator-anthropic-api-key".file =
     "/var/lib/clawd/nix-secrets/clawdinator-anthropic-api-key.age";
+  age.secrets."clawdinator-openai-api-key".file =
+    "/var/lib/clawd/nix-secrets/clawdinator-openai-api-key.age";
   age.secrets."clawdinator-discord-token".file =
     "/var/lib/clawd/nix-secrets/clawdinator-discord-token.age";
 
@@ -47,6 +49,7 @@
     };
 
     anthropicApiKeyFile = "/run/agenix/clawdinator-anthropic-api-key";
+    openaiApiKeyFile = "/run/agenix/clawdinator-openai-api-key";
     discordTokenFile = "/run/agenix/clawdinator-discord-token";
 
     githubApp = {

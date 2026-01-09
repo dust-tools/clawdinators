@@ -18,10 +18,12 @@ Runtime (CLAWDINATOR):
 - Discord bot token (required, per instance).
 - GitHub token (required): GitHub App installation token (preferred) or a read-only PAT.
 - Anthropic API key (required for Claude models).
+- OpenAI API key (required for OpenAI models).
 
 Explicit token files (standard):
 - `services.clawdinator.discordTokenFile`
 - `services.clawdinator.anthropicApiKeyFile`
+- `services.clawdinator.openaiApiKeyFile`
 - `services.clawdinator.githubPatFile` (PAT path, if not using GitHub App; exports `GITHUB_TOKEN` + `GH_TOKEN`)
 
 GitHub App (preferred):
@@ -35,6 +37,7 @@ Agenix (local secrets repo):
 - Decrypt on host with agenix; point NixOS options at `/run/agenix/*`.
 - Image builds bake the agenix identity to `/etc/agenix/keys/clawdinator.agekey`; do not commit this key.
 - Required files (minimum): `clawdinator-github-app.pem.age`, `clawdinator-discord-token.age`, `clawdinator-anthropic-api-key.age`.
+- Also required for OpenAI: `clawdinator-openai-api-key.age`.
 - CI image pipeline (stored locally, not on hosts): `clawdinator-image-uploader-access-key-id.age`, `clawdinator-image-uploader-secret-access-key.age`, `clawdinator-image-bucket-name.age`, `clawdinator-image-bucket-region.age`.
 
 Example NixOS wiring (agenix):
@@ -47,6 +50,8 @@ Example NixOS wiring (agenix):
     "/var/lib/clawd/nix-secrets/clawdinator-github-app.pem.age";
   age.secrets."clawdinator-anthropic-api-key".file =
     "/var/lib/clawd/nix-secrets/clawdinator-anthropic-api-key.age";
+  age.secrets."clawdinator-openai-api-key".file =
+    "/var/lib/clawd/nix-secrets/clawdinator-openai-api-key.age";
   age.secrets."clawdinator-discord-token".file =
     "/var/lib/clawd/nix-secrets/clawdinator-discord-token.age";
 
@@ -54,6 +59,8 @@ Example NixOS wiring (agenix):
     "/run/agenix/clawdinator-github-app.pem";
   services.clawdinator.anthropicApiKeyFile =
     "/run/agenix/clawdinator-anthropic-api-key";
+  services.clawdinator.openaiApiKeyFile =
+    "/run/agenix/clawdinator-openai-api-key";
   services.clawdinator.discordTokenFile =
     "/run/agenix/clawdinator-discord-token";
 }

@@ -88,7 +88,7 @@ let
     toolchain.docs;
 
   tokenWrapper =
-    if cfg.anthropicApiKeyFile != null || cfg.discordTokenFile != null || cfg.githubPatFile != null then
+    if cfg.anthropicApiKeyFile != null || cfg.discordTokenFile != null || cfg.githubPatFile != null || cfg.openaiApiKeyFile != null then
       pkgs.writeShellScriptBin "clawdinator-gateway" ''
         set -euo pipefail
 
@@ -116,6 +116,7 @@ let
         ${lib.optionalString (cfg.anthropicApiKeyFile != null) "read_token ANTHROPIC_API_KEY \"${cfg.anthropicApiKeyFile}\""}
         ${lib.optionalString (cfg.discordTokenFile != null) "read_token DISCORD_BOT_TOKEN \"${cfg.discordTokenFile}\""}
         ${lib.optionalString (cfg.githubPatFile != null) "read_token \"GITHUB_TOKEN GH_TOKEN\" \"${cfg.githubPatFile}\""}
+        ${lib.optionalString (cfg.openaiApiKeyFile != null) "read_token \"OPENAI_API_KEY OPEN_AI_APIKEY\" \"${cfg.openaiApiKeyFile}\""}
 
         exec "${cfg.package}/bin/clawdbot" gateway --port ${toString cfg.gatewayPort}
       ''
@@ -249,6 +250,12 @@ in
       type = types.nullOr types.str;
       default = null;
       description = "Path to file containing Anthropic API key (plain text).";
+    };
+
+    openaiApiKeyFile = mkOption {
+      type = types.nullOr types.str;
+      default = null;
+      description = "Path to file containing OpenAI API key (plain text).";
     };
 
     discordTokenFile = mkOption {

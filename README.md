@@ -77,6 +77,7 @@ Secrets (required):
 - Discord bot token (per instance).
 - Discord bot tokens are explicit files via agenix.
 - Anthropic API key (Claude models).
+- OpenAI API key (OpenAI models).
 - AWS credentials (image pipeline + infra).
 - Agenix image key (baked into AMI via CI).
 
