@@ -62,10 +62,10 @@ in
 
       config = {
         gateway.mode = "local";
-        agent.workspace = "/var/lib/clawd/workspace";
-        agent.maxConcurrent = 4;
-        agent.skipBootstrap = true;
         agents.defaults = {
+          workspace = "/var/lib/clawd/workspace";
+          maxConcurrent = 4;
+          skipBootstrap = true;
           models = {
             "openai/gpt-5.2-codex" = { alias = "Codex"; };
             "anthropic/claude-opus-4-5" = { alias = "Opus"; };
@@ -75,6 +75,13 @@ in
             fallbacks = [ "anthropic/claude-opus-4-5" ];
           };
         };
+        agents.list = [
+          {
+            id = "main";
+            default = true;
+            identity.name = "CLAWDINATOR-1";
+          }
+        ];
         logging = {
           level = "info";
           file = "/var/lib/clawd/logs/clawdbot.log";
@@ -92,16 +99,15 @@ in
             }
           ];
         };
-        routing.queue = {
+        messages.queue = {
           mode = "interrupt";
-          bySurface = {
+          byProvider = {
             discord = "queue";
             telegram = "interrupt";
             whatsapp = "interrupt";
             webchat = "queue";
           };
         };
-        identity.name = "CLAWDINATOR-1";
         skills.allowBundled = [ "github" "clawdhub" ];
         cron = {
           enabled = true;

@@ -26,13 +26,19 @@
     # Raw Clawdbot config JSON (schema is upstream). Extend as needed.
     config = {
       gateway.mode = "server";
-      agent.workspace = "/var/lib/clawd/workspace";
-      routing.queue.bySurface = {
+      agents.defaults.workspace = "/var/lib/clawd/workspace";
+      messages.queue.byProvider = {
         discord = "queue";
         telegram = "interrupt";
         whatsapp = "interrupt";
       };
-      identity.name = "CLAWDINATOR-1";
+      agents.list = [
+        {
+          id = "main";
+          default = true;
+          identity.name = "CLAWDINATOR-1";
+        }
+      ];
       skills.allowBundled = [ "github" "clawdhub" ];
       discord = {
         enabled = true;
