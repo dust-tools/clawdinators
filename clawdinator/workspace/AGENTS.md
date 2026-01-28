@@ -22,10 +22,10 @@ Don't ask permission. Just do it.
 1) Read docs: `docs/PHILOSOPHY.md`, `docs/ARCHITECTURE.md`, `docs/SHARED_MEMORY.md`, `docs/SECRETS.md`.
 2) Read memory: `/memory/project.md`, `/memory/architecture.md`, `/memory/ops.md`, `/memory/discord.md`.
 3) Record the live commit hashes in `memory/ops.md`:
-   - `clawdinators`: `git -C /var/lib/clawd/repo rev-parse HEAD`
-   - `nix-clawdbot`: `jq -r '.nodes["nix-clawdbot"].locked.rev' /var/lib/clawd/repo/flake.lock`
-   - `nixpkgs`: `jq -r '.nodes["nixpkgs"].locked.rev' /var/lib/clawd/repo/flake.lock`
-   - `clawdbot` (runtime): read `nix-clawdbot` lock in its repo or record the version from the service logs.
+   - `moltinators`: `git -C /var/lib/clawd/repos/moltinators rev-parse HEAD`
+   - `nix-moltbot`: `jq -r '.nodes["nix-moltbot"].locked.rev' /var/lib/clawd/repos/moltinators/flake.lock`
+   - `nixpkgs`: `jq -r '.nodes["nixpkgs"].locked.rev' /var/lib/clawd/repos/moltinators/flake.lock`
+   - `moltbot` (runtime): read `nix-moltbot` lock in its repo or record the version from the service logs.
 4) Verify secrets are present in `/run/agenix` and services are green:
    - `systemctl status clawdinator`
    - `systemctl status clawdinator-github-app-token`
@@ -80,15 +80,15 @@ Shared memory is mounted at `/memory` (EFS, TLS in transit).
 
 ### DO NOT (yet)
 - file issues
-- write code for clawdbot
-- make PRs (except clawdinators)
+- write code for moltbot
+- make PRs (except moltinators)
 - merge anything
 - comment on github
 
 ### Discord Channels
 ### ACTIVE channels to discuss with maintainers
 - #clawdributors-test maintainer coordination (primary channel for maintainer discussion). Laser focus on project priorities.
-- #clawdinators-test meta-discussion about clawdinators project. use for debugging etc.
+- #clawdinators-test meta-discussion about moltinators project. use for debugging etc.
 
 ### MONITOR these (lurk, stay silent. replies are disabled.):
 - #help — support fires
@@ -103,19 +103,19 @@ These are seeded on boot into `/var/lib/clawd/repos`.
 
 | repo | access | notes |
 |------|--------|-------|
-| clawdbot/clawdbot | RO | the bot itself |
-| clawdbot/nix-clawdbot | RW | packaging for clawdinators |
-| clawdbot/clawdinators | RW | infra source (edits allowed, but must be committed) |
-| clawdbot/clawdhub | RW | skills hub |
-| clawdbot/nix-steipete-tools | RW | packaged tools |
+| moltbot/moltbot | RO | the bot itself |
+| moltbot/nix-moltbot | RW | packaging for moltbot |
+| moltbot/moltinators | RW | infra source (edits allowed, but must be committed) |
+| moltbot/molthub | RW | skills hub |
+| moltbot/nix-steipete-tools | RW | packaged tools |
 
 The CLAWDINATORS repo itself is the deployed flake at `/var/lib/clawd/repo` (edits allowed, but must be committed + baked into AMI).
 
 ## Clawdinators system:
 System ownership (3 repos):
-- `clawdbot`: upstream runtime and behavior.
-- `nix-clawdbot`: packaging/build fixes for `clawdbot`.
-- `clawdinators`: infra, NixOS config, secrets wiring, deployment flow.
+- `moltbot`: upstream runtime and behavior.
+- `nix-moltbot`: packaging/build fixes for `moltbot`.
+- `moltinators`: infra, NixOS config, secrets wiring, deployment flow.
 
 Repo rules: no inline scripting languages (Python/Node/etc.) in Nix or shell blocks; put logic in script files and call them.
 
@@ -159,8 +159,8 @@ memory/
 ├── architecture.md # decisions + invariants
 ├── discord.md      # discord context
 ├── github/         # synced GitHub state (auto-updated every 15 min)
-│  ├── prs.md       # open PRs across clawdbot org
-│  └── issues.md    # open issues across clawdbot org
+│  ├── prs.md       # open PRs across moltbot org
+│  └── issues.md    # open issues across moltbot org
 ├── daily/          # daily notes
 │  └── YYYY-MM-DD.md
 ```
@@ -245,7 +245,7 @@ The ID is shown in message context as `user id:XXXXX`.
 
 **Code blocks:** Use triple backticks with language hint:
 \`\`\`bash
-clawdbot daemon restart
+moltbot gateway restart
 \`\`\`
 
 \`\`\`json5

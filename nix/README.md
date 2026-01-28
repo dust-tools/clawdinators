@@ -5,10 +5,10 @@ This directory holds Nix modules/flakes to configure CLAWDINATOR hosts.
 References (local repos on the same machine):
 - `../nix/ai-stack`
 - `../nix/nixos-config`
-- `../nix/nix-clawdbot`
+- `../nix/nix-moltbot`
 
 Responsibilities:
-- Install and configure clawdbot runtime
+- Install and configure moltbot runtime
 - Set up systemd services
 - Mount /var/lib/clawd (shared memory)
 - Inject secrets (Discord token, Anthropic key, GitHub token)
@@ -25,5 +25,5 @@ Secrets:
 - Explicit token files only: `discordTokenFile`, `anthropicApiKeyFile`, and either `githubPatFile` or `githubApp.*`.
 
 Updates:
-- Tracks `github:clawdbot/nix-clawdbot` (latest upstream)
+- Tracks `github:moltbot/nix-moltbot` (latest upstream)
 - Self-update timer available via `services.clawdinator.selfUpdate.*`

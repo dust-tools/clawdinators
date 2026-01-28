@@ -5,7 +5,7 @@ let
   configSource =
     if cfg.configFile != null
     then cfg.configFile
-    else pkgs.writeText "clawdbot.json" (builtins.toJSON cfg.config);
+    else pkgs.writeText "moltbot.json" (builtins.toJSON cfg.config);
 
   updateScript = pkgs.writeShellScript "clawdinator-self-update" ''
     set -euo pipefail
@@ -66,11 +66,11 @@ let
   '';
 
   defaultPackage =
-    if pkgs ? clawdbot-gateway
-    then pkgs.clawdbot-gateway
-    else pkgs.clawdbot;
+    if pkgs ? moltbot-gateway
+    then pkgs.moltbot-gateway
+    else pkgs.moltbot;
 
-  configPath = "/etc/clawd/clawdbot.json";
+  configPath = "/etc/clawd/moltbot.json";
   workspaceDir = "${cfg.stateDir}/workspace";
   repoSeedBaseDir = cfg.repoSeedBaseDir;
   logDir = "${cfg.stateDir}/logs";
@@ -118,14 +118,14 @@ let
         ${lib.optionalString (cfg.githubPatFile != null) "read_token \"GITHUB_TOKEN GH_TOKEN\" \"${cfg.githubPatFile}\""}
         ${lib.optionalString (cfg.openaiApiKeyFile != null) "read_token \"OPENAI_API_KEY OPEN_AI_APIKEY\" \"${cfg.openaiApiKeyFile}\""}
 
-        exec "${cfg.package}/bin/clawdbot" gateway --port ${toString cfg.gatewayPort}
+        exec "${cfg.package}/bin/moltbot" gateway --port ${toString cfg.gatewayPort}
       ''
     else
       null;
 in
 {
   options.services.clawdinator = with lib; {
-    enable = mkEnableOption "CLAWDINATOR (Clawdbot gateway on NixOS)";
+    enable = mkEnableOption "CLAWDINATOR (Moltbot gateway on NixOS)";
 
     instanceName = mkOption {
       type = types.str;
@@ -148,7 +148,7 @@ in
     package = mkOption {
       type = types.package;
       default = defaultPackage;
-      description = "Clawdbot gateway package (from nix-clawdbot overlay).";
+      description = "Moltbot gateway package (from nix-moltbot overlay).";
     };
 
     stateDir = mkOption {
@@ -276,19 +276,19 @@ in
     gatewayPort = mkOption {
       type = types.port;
       default = 18789;
-      description = "Gateway port for Clawdbot.";
+      description = "Gateway port for Moltbot.";
     };
 
     config = mkOption {
       type = types.attrs;
       default = {};
-      description = "Raw Clawdbot config JSON (merged into clawdbot.json).";
+      description = "Raw Moltbot config JSON (merged into moltbot.json).";
     };
 
     configFile = mkOption {
       type = types.nullOr types.path;
       default = null;
-      description = "Optional path to a clawdbot.json file. Overrides config attr.";
+      description = "Optional path to a moltbot.json file. Overrides config attr.";
     };
 
     cronJobsFile = mkOption {
@@ -403,7 +403,7 @@ in
 
       org = mkOption {
         type = types.str;
-        default = "clawdbot";
+        default = "moltbot";
         description = "GitHub org to sync.";
       };
     };
@@ -419,8 +419,8 @@ in
 
     assertions = [
       {
-        assertion = (pkgs ? clawdbot-gateway) || (pkgs ? clawdbot);
-        message = "services.clawdinator requires nix-clawdbot overlay (pkgs.clawdbot-gateway).";
+        assertion = (pkgs ? moltbot-gateway) || (pkgs ? moltbot);
+        message = "services.clawdinator requires nix-moltbot overlay (pkgs.moltbot-gateway).";
       }
       {
         assertion = cfg.githubApp.enable || cfg.githubPatFile != null;
@@ -453,7 +453,7 @@ in
         (pkgs.writeShellScriptBin "memory-edit" ''exec /etc/clawdinator/bin/memory-edit "$@"'')
       ];
 
-    environment.etc."clawd/clawdbot.json".source = configSource;
+    environment.etc."clawd/moltbot.json".source = configSource;
     environment.etc."clawd/cron-jobs.json" = lib.mkIf (cfg.cronJobsFile != null) {
       source = cfg.cronJobsFile;
       mode = "0644";
@@ -567,7 +567,7 @@ in
     };
 
     systemd.services.clawdinator = {
-      description = "CLAWDINATOR (Clawdbot gateway)";
+      description = "CLAWDINATOR (Moltbot gateway)";
       wantedBy = [ "multi-user.target" ];
       after =
         [ "network.target" ]
@@ -608,7 +608,7 @@ in
         ExecStart =
           if tokenWrapper != null
           then "${tokenWrapper}/bin/clawdinator-gateway"
-          else "${cfg.package}/bin/clawdbot gateway --port ${toString cfg.gatewayPort}";
+          else "${cfg.package}/bin/moltbot gateway --port ${toString cfg.gatewayPort}";
         Restart = "always";
         RestartSec = 2;
         StandardOutput = "append:${logDir}/gateway.log";

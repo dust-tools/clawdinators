@@ -85,7 +85,7 @@
     "home-manager_2": {
       "inputs": {
         "nixpkgs": [
-          "nix-clawdbot",
+          "nix-moltbot",
           "nixpkgs"
         ]
       },
@@ -103,7 +103,7 @@
         "type": "github"
       }
     },
-    "nix-clawdbot": {
+    "nix-moltbot": {
       "inputs": {
         "flake-utils": "flake-utils",
         "home-manager": "home-manager_2",
@@ -111,16 +111,16 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1768080545,
-        "narHash": "sha256-2DpemKMTe8qfLZ/o1Du+DV2nRgh7LIxDvm//ToVrox8=",
-        "owner": "clawdbot",
-        "repo": "nix-clawdbot",
-        "rev": "939d031f2724b39d790f0413fc5156bdd962aa8d",
+        "lastModified": 1769615423,
+        "narHash": "sha256-LB7zN3b6/tkwPyzObMSxWneMVGMJiApY+LVAJ6C9bpA=",
+        "owner": "moltbot",
+        "repo": "nix-moltbot",
+        "rev": "d7ef1bc688596ed6113d4750e98ab87fc350af7c",
         "type": "github"
       },
       "original": {
-        "owner": "clawdbot",
-        "repo": "nix-clawdbot",
+        "owner": "moltbot",
+        "repo": "nix-moltbot",
         "type": "github"
       }
     },
@@ -129,15 +129,15 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1767882239,
-        "narHash": "sha256-F7Ja1qzjg/A+5UAHgOjRU2UzUl0L6AJJJl826oBH0a0=",
-        "owner": "clawdbot",
+        "lastModified": 1769518314,
+        "narHash": "sha256-r48vscCGwB4ujzNq7tnrvO6FpStbKr+45ap2m2skO4Q=",
+        "owner": "moltbot",
         "repo": "nix-steipete-tools",
-        "rev": "5234375e156f8505efc19248cd1e297e1d03c76d",
+        "rev": "9a9b3b97418e3705d325ab9aad5693ac1208c891",
         "type": "github"
       },
       "original": {
-        "owner": "clawdbot",
+        "owner": "moltbot",
         "repo": "nix-steipete-tools",
         "type": "github"
       }
@@ -193,9 +193,9 @@
     "root": {
       "inputs": {
         "agenix": "agenix",
-        "nix-clawdbot": "nix-clawdbot",
+        "nix-moltbot": "nix-moltbot",
         "nixpkgs": [
-          "nix-clawdbot",
+          "nix-moltbot",
           "nixpkgs"
         ]
       }

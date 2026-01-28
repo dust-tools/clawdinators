@@ -65,10 +65,10 @@ jobs:
           mkdir -p nix/age-secrets
           aws s3 sync "s3://${S3_BUCKET}/age-secrets" nix/age-secrets
           for file in \
-            nix/age-secrets/clawdinator-github-app.pem.age \
-            nix/age-secrets/clawdinator-discord-token.age \
-            nix/age-secrets/clawdinator-anthropic-api-key.age \
-            nix/age-secrets/clawdinator-openai-api-key-peter-2.age
+            nix/age-secrets/moltinator-github-app.pem.age \
+            nix/age-secrets/moltinator-discord-token.age \
+            nix/age-secrets/moltinator-anthropic-api-key.age \
+            nix/age-secrets/moltinator-openai-api-key-peter-2.age
           do
             test -f "$file"
           done
@@ -79,9 +79,9 @@ jobs:
           GITHUB_APP_INSTALLATION_ID: "102951645"
         run: |
           age -d -i nix/keys/clawdinator.agekey \
-            -o /tmp/clawdinator-github-app.pem \
-            nix/age-secrets/clawdinator-github-app.pem.age
-          export GITHUB_APP_PEM_FILE=/tmp/clawdinator-github-app.pem
+            -o /tmp/moltinator-github-app.pem \
+            nix/age-secrets/moltinator-github-app.pem.age
+          export GITHUB_APP_PEM_FILE=/tmp/moltinator-github-app.pem
           token="$(scripts/mint-github-app-token.sh)"
           echo "GITHUB_TOKEN=${token}" >> "${GITHUB_ENV}"
 

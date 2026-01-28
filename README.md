@@ -1,4 +1,4 @@
-# clawdinators
+# moltinators
 
 <p align="center">
   <img src="assets/clawdinator.jpg" alt="CLAWDINATOR - Cybernetic crustacean organism, living tissue over metal endoskeleton" width="600">
@@ -34,7 +34,7 @@ This repo solves two problems:
 1. **Generic:** How do you deploy NixOS to AWS with zero manual steps?
 2. **Specific:** How do you run AI coding agents that monitor GitHub and respond on Discord?
 
-If you're here to learn NixOS-on-AWS patterns, focus on the generic layer. If you're a clawdbot maintainer deploying CLAWDINATORs, the specific layer is for you.
+If you're here to learn NixOS-on-AWS patterns, focus on the generic layer. If you're a moltbot maintainer deploying CLAWDINATORs, the specific layer is for you.
 
 ---
 
@@ -144,7 +144,7 @@ This repo takes a different approach: **image-based provisioning only**.
 ### The CLAWDINATOR Problem
 
 We needed AI agents that:
-- Run 24/7 monitoring clawdbot repos
+- Run 24/7 monitoring moltbot repos
 - Respond to maintainer requests on Discord
 - Share context across instances (hive mind)
 - Self-update without human intervention
@@ -168,8 +168,8 @@ If you just want to understand the NixOS-on-AWS pattern, start here.
 
 ```bash
 # Clone
-git clone https://github.com/joshp123/clawdinators.git
-cd clawdinators
+git clone https://github.com/moltbot/moltinators.git
+cd moltinators
 
 # See the NixOS module (the interesting part)
 less nix/modules/clawdinator.nix
@@ -215,13 +215,13 @@ ls scripts/
 
 ## Full Deploy (Maintainers)
 
-For clawdbot maintainers deploying actual CLAWDINATORs.
+For moltbot maintainers deploying actual CLAWDINATORs.
 
 ### Prerequisites
 
 - Access to `nix-secrets` repo (agenix keys)
 - AWS credentials with sufficient permissions
-- GitHub App credentials for the clawdbot org
+- GitHub App credentials for the moltbot org
 
 ### Step-by-Step
 
@@ -251,14 +251,14 @@ tofu apply
 
 ```bash
 # Check Discord - CLAWDINATOR should announce itself in #clawdributors-test
-# Check GitHub - should see activity in clawdbot org repos
+# Check GitHub - should see activity in moltbot org repos
 ```
 
 ### Self-Update
 
 CLAWDINATORs update themselves via a systemd timer:
 
-1. `flake lock --update-input nix-clawdbot`
+1. `flake lock --update-input nix-moltbot`
 2. `nixos-rebuild switch`
 3. Gateway restarts with new version
 
@@ -268,14 +268,14 @@ No human intervention required for routine updates.
 
 ## Agent Copypasta
 
-Paste this to your AI assistant to help with clawdinators setup/debugging:
+Paste this to your AI assistant to help with moltinators setup/debugging:
 
 ```text
-I'm working with the clawdinators repo (NixOS-on-AWS + AI coding agents).
+I'm working with the moltinators repo (NixOS-on-AWS + AI coding agents).
 
-Repository: github:joshp123/clawdinators
+Repository: github:moltbot/moltinators
 
-What clawdinators is:
+What moltinators is:
 - Two layers: generic NixOS-on-AWS infra + CLAWDINATOR-specific agent stuff
 - Image-based provisioning only (no SSH, no drift)
 - OpenTofu for AWS resources, agenix for secrets
@@ -376,7 +376,7 @@ s3://bucket/bootstrap/clawdinator-1/
 ## Repo Layout
 
 ```
-clawdinators/
+moltinators/
 ├── nix/
 │   ├── modules/
 │   │   └── clawdinator.nix    # Main NixOS module
@@ -419,9 +419,9 @@ clawdinators/
 
 | Repo | Role |
 |------|------|
-| [clawdbot](https://github.com/clawdbot/clawdbot) | Upstream runtime + gateway |
-| [nix-clawdbot](https://github.com/clawdbot/nix-clawdbot) | Nix packaging for clawdbot |
-| [clawdhub](https://github.com/clawdbot/clawdhub) | Public skill registry |
+| [moltbot](https://github.com/moltbot/moltbot) | Upstream runtime + gateway |
+| [nix-moltbot](https://github.com/moltbot/nix-moltbot) | Nix packaging for moltbot |
+| [molthub](https://github.com/moltbot/molthub) | Public skill registry |
 | [ai-stack](https://github.com/joshp123/ai-stack) | Public agent defaults + skills |
 
 ---
@@ -435,7 +435,7 @@ clawdinators/
 - **Image-based only.** No SSH, no in-place drift, no pets.
 - **Self-updating.** CLAWDINATORs maintain themselves.
 
-### Zen of Clawdbot
+### Zen of Moltbot
 
 ```
 Beautiful is better than ugly.

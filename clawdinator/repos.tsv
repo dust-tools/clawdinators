@@ -1,5 +1,5 @@
-clawdbot	https://github.com/clawdbot/clawdbot.git
-nix-clawdbot	https://github.com/clawdbot/nix-clawdbot.git
-clawdinators	https://github.com/clawdbot/clawdinators.git
-clawdhub	https://github.com/clawdbot/clawdhub.git
-nix-steipete-tools	https://github.com/clawdbot/nix-steipete-tools.git
+moltbot	https://github.com/moltbot/moltbot.git
+nix-moltbot	https://github.com/moltbot/nix-moltbot.git
+moltinators	https://github.com/moltbot/moltinators.git
+molthub	https://github.com/moltbot/molthub.git
+nix-steipete-tools	https://github.com/moltbot/nix-steipete-tools.git
