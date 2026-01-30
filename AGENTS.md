@@ -21,14 +21,14 @@ Memory references:
 Repo rule: no inline scripting languages (Python/Node/etc.) in Nix or shell blocks; put logic in script files and call them.
 
 System ownership (3 repos):
-- `moltbot`: upstream runtime and behavior.
-- `nix-moltbot`: packaging/build fixes for `moltbot`.
-- `moltinators`: infra, NixOS config, secrets wiring, deployment flow.
+- `openclaw`: upstream runtime and behavior.
+- `nix-openclaw`: packaging/build fixes for clawbot.
+- `clawdinators`: infra, NixOS config, secrets wiring, deployment flow.
 
 Maintainer role:
 - Monitor issues + PRs and keep an inventory of what needs human attention.
 - Surface priorities and context; do not file issues or modify code unless asked.
-- Track running versions (moltbot/nix-moltbot/moltinators) and note them in `memory/ops.md`.
+- Track running versions (openclaw/nix-openclaw/clawdinators) and note them in `memory/ops.md`.
 
 Toolchain workflow (repo source of truth):
 - Add/remove tools in `nix/tools/clawdinator-tools.nix` (packages + descriptions).
@@ -69,10 +69,10 @@ Deploy flow (automation-first):
 - Bootstrap AWS instances from the AMI with `infra/opentofu/aws` (set `TF_VAR_ami_id`).
 - Import the image into AWS as an AMI (snapshot import + register image).
 - Ensure secrets are encrypted to the baked agenix key (see `../nix/nix-secrets/secrets.nix`).
-- Ensure required secrets exist: `moltinator-github-app.pem`, `moltinator-discord-token`, `moltinator-anthropic-api-key`.
+- Ensure required secrets exist: `clawdinator-github-app.pem`, `clawdinator-discord-token`, `clawdinator-anthropic-api-key`.
 - Update `nix/hosts/<host>.nix` (Discord allowlist, GitHub App installationId, identity name).
 - Discord must use `messages.queue.byChannel.discord = "interrupt"`; `queue` delays replies to heartbeat and makes the bot appear dead.
-- Ensure `/var/lib/clawd/repos/moltinators` contains this repo (self-update requires it).
+- Ensure `/var/lib/clawd/repos/clawdinators` contains this repo (self-update requires it).
 - Verify systemd services: `clawdinator`, `clawdinator-github-app-token`, `clawdinator-self-update`.
 - Commit and push changes; repo is the source of truth.
 
@@ -87,10 +87,10 @@ Bootstrap (local):
   - `TF_VAR_root_volume_size_gb=40` (bump if Nix store runs out of space)
 - Run `tofu init` + `tofu apply` in `infra/opentofu/aws`.
 - After apply, update CI secrets from outputs:
-  - `tofu output -raw access_key_id` → `moltinator-image-uploader-access-key-id.age`
-  - `tofu output -raw secret_access_key` → `moltinator-image-uploader-secret-access-key.age`
-  - `tofu output -raw bucket_name` → `moltinator-image-bucket-name.age`
-  - `tofu output -raw aws_region` → `moltinator-image-bucket-region.age`
+  - `tofu output -raw access_key_id` → `clawdinator-image-uploader-access-key-id.age`
+  - `tofu output -raw secret_access_key` → `clawdinator-image-uploader-secret-access-key.age`
+  - `tofu output -raw bucket_name` → `clawdinator-image-bucket-name.age`
+  - `tofu output -raw aws_region` → `clawdinator-image-bucket-region.age`
   - Then `gh secret set` for `AWS_ACCESS_KEY_ID`, `AWS_SECRET_ACCESS_KEY`, `AWS_REGION`, `S3_BUCKET`.
 - Get the latest AMI ID:
   - `aws ec2 describe-images --region eu-central-1 --owners self --filters "Name=tag:clawdinator,Values=true" --query "Images | sort_by(@,&CreationDate)[-1].[ImageId,Name,CreationDate]" --output text`

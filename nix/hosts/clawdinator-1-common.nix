@@ -29,23 +29,23 @@ in
     clawdinator.secretsPath = "/var/lib/clawd/nix-secrets";
 
     age.identityPaths = [ "/etc/agenix/keys/clawdinator.agekey" ];
-    age.secrets."moltinator-github-app.pem" = {
-      file = "${secretsPath}/moltinator-github-app.pem.age";
+    age.secrets."clawdinator-github-app.pem" = {
+      file = "${secretsPath}/clawdinator-github-app.pem.age";
       owner = "clawdinator";
       group = "clawdinator";
     };
-    age.secrets."moltinator-anthropic-api-key" = {
-      file = "${secretsPath}/moltinator-anthropic-api-key.age";
+    age.secrets."clawdinator-anthropic-api-key" = {
+      file = "${secretsPath}/clawdinator-anthropic-api-key.age";
       owner = "clawdinator";
       group = "clawdinator";
     };
-    age.secrets."moltinator-openai-api-key-peter-2" = {
-      file = "${secretsPath}/moltinator-openai-api-key-peter-2.age";
+    age.secrets."clawdinator-openai-api-key-peter-2" = {
+      file = "${secretsPath}/clawdinator-openai-api-key-peter-2.age";
       owner = "clawdinator";
       group = "clawdinator";
     };
-    age.secrets."moltinator-discord-token" = {
-      file = "${secretsPath}/moltinator-discord-token.age";
+    age.secrets."clawdinator-discord-token" = {
+      file = "${secretsPath}/clawdinator-discord-token.age";
       owner = "clawdinator";
       group = "clawdinator";
     };
@@ -102,7 +102,7 @@ in
         ];
         logging = {
           level = "info";
-          file = "/var/lib/clawd/logs/moltbot.log";
+          file = "/var/lib/clawd/logs/clawbot.log";
         };
         session.sendPolicy = {
           default = "allow";
@@ -165,20 +165,20 @@ in
         };
       };
 
-      anthropicApiKeyFile = "/run/agenix/moltinator-anthropic-api-key";
-      openaiApiKeyFile = "/run/agenix/moltinator-openai-api-key-peter-2";
-      discordTokenFile = "/run/agenix/moltinator-discord-token";
+      anthropicApiKeyFile = "/run/agenix/clawdinator-anthropic-api-key";
+      openaiApiKeyFile = "/run/agenix/clawdinator-openai-api-key-peter-2";
+      discordTokenFile = "/run/agenix/clawdinator-discord-token";
 
       githubApp = {
         enable = true;
         appId = "2607181";
         installationId = "102951645";
-        privateKeyFile = "/run/agenix/moltinator-github-app.pem";
+        privateKeyFile = "/run/agenix/clawdinator-github-app.pem";
         schedule = "hourly";
       };
 
       selfUpdate.enable = true;
-      selfUpdate.flakePath = "/var/lib/clawd/repos/moltinators";
+      selfUpdate.flakePath = "/var/lib/clawd/repos/clawdinators";
       selfUpdate.flakeHost = "clawdinator-1";
 
       githubSync.enable = true;

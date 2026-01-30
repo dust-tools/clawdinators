@@ -27,7 +27,7 @@ Explicit token files (standard):
 - `services.clawdinator.githubPatFile` (PAT path, if not using GitHub App; exports `GITHUB_TOKEN` + `GH_TOKEN`)
 
 GitHub App (preferred):
-- Private key PEM decrypted to `/run/agenix/moltinator-github-app.pem`.
+- Private key PEM decrypted to `/run/agenix/clawdinator-github-app.pem`.
 - App ID + Installation ID in `services.clawdinator.githubApp.*`.
 - Timer mints short-lived tokens into `/run/clawd/github-app.env` with `GITHUB_TOKEN` + `GH_TOKEN`.
 
@@ -36,9 +36,9 @@ Agenix (local secrets repo):
 - Sync encrypted secrets to the host at `/var/lib/clawd/nix-secrets`.
 - Decrypt on host with agenix; point NixOS options at `/run/agenix/*`.
 - Image builds do **not** bake the agenix identity; the age key is injected at runtime via the bootstrap bundle.
-- Required files (minimum): `moltinator-github-app.pem.age`, `moltinator-discord-token.age`, `moltinator-anthropic-api-key.age`.
-- Also required for OpenAI: `moltinator-openai-api-key-peter-2.age`.
-- CI image pipeline (stored locally, not on hosts): `moltinator-image-uploader-access-key-id.age`, `moltinator-image-uploader-secret-access-key.age`, `moltinator-image-bucket-name.age`, `moltinator-image-bucket-region.age`.
+- Required files (minimum): `clawdinator-github-app.pem.age`, `clawdinator-discord-token.age`, `clawdinator-anthropic-api-key.age`.
+- Also required for OpenAI: `clawdinator-openai-api-key-peter-2.age`.
+- CI image pipeline (stored locally, not on hosts): `clawdinator-image-uploader-access-key-id.age`, `clawdinator-image-uploader-secret-access-key.age`, `clawdinator-image-bucket-name.age`, `clawdinator-image-bucket-region.age`.
 
 Bootstrap bundle (runtime injection):
 - CI uploads `secrets.tar.zst` + `repo-seeds.tar.zst` to `s3://${S3_BUCKET}/bootstrap/<instance>/`.
@@ -53,22 +53,22 @@ Example NixOS wiring (agenix):
 {
   imports = [ inputs.agenix.nixosModules.default ];
 
-  age.secrets."moltinator-github-app.pem".file =
-    "/var/lib/clawd/nix-secrets/moltinator-github-app.pem.age";
-  age.secrets."moltinator-anthropic-api-key".file =
-    "/var/lib/clawd/nix-secrets/moltinator-anthropic-api-key.age";
-  age.secrets."moltinator-openai-api-key-peter-2".file =
-    "/var/lib/clawd/nix-secrets/moltinator-openai-api-key-peter-2.age";
-  age.secrets."moltinator-discord-token".file =
-    "/var/lib/clawd/nix-secrets/moltinator-discord-token.age";
+  age.secrets."clawdinator-github-app.pem".file =
+    "/var/lib/clawd/nix-secrets/clawdinator-github-app.pem.age";
+  age.secrets."clawdinator-anthropic-api-key".file =
+    "/var/lib/clawd/nix-secrets/clawdinator-anthropic-api-key.age";
+  age.secrets."clawdinator-openai-api-key-peter-2".file =
+    "/var/lib/clawd/nix-secrets/clawdinator-openai-api-key-peter-2.age";
+  age.secrets."clawdinator-discord-token".file =
+    "/var/lib/clawd/nix-secrets/clawdinator-discord-token.age";
 
   services.clawdinator.githubApp.privateKeyFile =
-    "/run/agenix/moltinator-github-app.pem";
+    "/run/agenix/clawdinator-github-app.pem";
   services.clawdinator.anthropicApiKeyFile =
-    "/run/agenix/moltinator-anthropic-api-key";
+    "/run/agenix/clawdinator-anthropic-api-key";
   services.clawdinator.openaiApiKeyFile =
-    "/run/agenix/moltinator-openai-api-key-peter-2";
+    "/run/agenix/clawdinator-openai-api-key-peter-2";
   services.clawdinator.discordTokenFile =
-    "/run/agenix/moltinator-discord-token";
+    "/run/agenix/clawdinator-discord-token";
 }
 ```

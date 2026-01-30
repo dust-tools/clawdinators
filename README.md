@@ -1,4 +1,4 @@
-# moltinators
+# clawdinators
 
 <p align="center">
   <img src="assets/clawdinator.jpg" alt="CLAWDINATOR - Cybernetic crustacean organism, living tissue over metal endoskeleton" width="600">
@@ -34,7 +34,7 @@ This repo solves two problems:
 1. **Generic:** How do you deploy NixOS to AWS with zero manual steps?
 2. **Specific:** How do you run AI coding agents that monitor GitHub and respond on Discord?
 
-If you're here to learn NixOS-on-AWS patterns, focus on the generic layer. If you're a moltbot maintainer deploying CLAWDINATORs, the specific layer is for you.
+If you're here to learn NixOS-on-AWS patterns, focus on the generic layer. If you're a openclaw maintainer deploying CLAWDINATORs, the specific layer is for you.
 
 ---
 
@@ -144,7 +144,7 @@ This repo takes a different approach: **image-based provisioning only**.
 ### The CLAWDINATOR Problem
 
 We needed AI agents that:
-- Run 24/7 monitoring moltbot repos
+- Run 24/7 monitoring openclaw repos
 - Respond to maintainer requests on Discord
 - Share context across instances (hive mind)
 - Self-update without human intervention
@@ -168,8 +168,8 @@ If you just want to understand the NixOS-on-AWS pattern, start here.
 
 ```bash
 # Clone
-git clone https://github.com/moltbot/moltinators.git
-cd moltinators
+git clone https://github.com/openclaw/clawdinators.git
+cd clawdinators
 
 # See the NixOS module (the interesting part)
 less nix/modules/clawdinator.nix
@@ -215,13 +215,13 @@ ls scripts/
 
 ## Full Deploy (Maintainers)
 
-For moltbot maintainers deploying actual CLAWDINATORs.
+For openclaw maintainers deploying actual CLAWDINATORs.
 
 ### Prerequisites
 
 - Access to `nix-secrets` repo (agenix keys)
 - AWS credentials with sufficient permissions
-- GitHub App credentials for the moltbot org
+- GitHub App credentials for the openclaw org
 
 ### Step-by-Step
 
@@ -251,14 +251,14 @@ tofu apply
 
 ```bash
 # Check Discord - CLAWDINATOR should announce itself in #clawdributors-test
-# Check GitHub - should see activity in moltbot org repos
+# Check GitHub - should see activity in openclaw org repos
 ```
 
 ### Self-Update
 
 CLAWDINATORs update themselves via a systemd timer:
 
-1. `flake lock --update-input nix-moltbot`
+1. `flake lock --update-input nix-openclaw`
 2. `nixos-rebuild switch`
 3. Gateway restarts with new version
 
@@ -268,14 +268,14 @@ No human intervention required for routine updates.
 
 ## Agent Copypasta
 
-Paste this to your AI assistant to help with moltinators setup/debugging:
+Paste this to your AI assistant to help with clawdinators setup/debugging:
 
 ```text
-I'm working with the moltinators repo (NixOS-on-AWS + AI coding agents).
+I'm working with the clawdinators repo (NixOS-on-AWS + AI coding agents).
 
-Repository: github:moltbot/moltinators
+Repository: github:openclaw/clawdinators
 
-What moltinators is:
+What clawdinators is:
 - Two layers: generic NixOS-on-AWS infra + CLAWDINATOR-specific agent stuff
 - Image-based provisioning only (no SSH, no drift)
 - OpenTofu for AWS resources, agenix for secrets
@@ -389,7 +389,7 @@ s3://bucket/bootstrap/clawdinator-1/
 ## Repo Layout
 
 ```
-moltinators/
+clawdinators/
 ├── nix/
 │   ├── modules/
 │   │   └── clawdinator.nix    # Main NixOS module
@@ -432,9 +432,9 @@ moltinators/
 
 | Repo | Role |
 |------|------|
-| [moltbot](https://github.com/moltbot/moltbot) | Upstream runtime + gateway |
-| [nix-moltbot](https://github.com/moltbot/nix-moltbot) | Nix packaging for moltbot |
-| [molthub](https://github.com/moltbot/molthub) | Public skill registry |
+| [openclaw](https://github.com/openclaw/openclaw) | Upstream runtime + gateway |
+| [nix-openclaw](https://github.com/openclaw/nix-openclaw) | Nix packaging for clawbot |
+| [clawhub](https://github.com/openclaw/clawhub) | Public skill registry |
 | [ai-stack](https://github.com/joshp123/ai-stack) | Public agent defaults + skills |
 
 ---

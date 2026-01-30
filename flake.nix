@@ -2,24 +2,24 @@
   description = "CLAWDINATOR infra + Nix modules";
 
   inputs = {
-    nix-moltbot.url = "github:moltbot/nix-moltbot"; # latest upstream
-    nixpkgs.follows = "nix-moltbot/nixpkgs";
+    nix-openclaw.url = "github:openclaw/nix-openclaw"; # latest upstream
+    nixpkgs.follows = "nix-openclaw/nixpkgs";
     agenix.url = "github:ryantm/agenix";
   };
 
-  outputs = { self, nixpkgs, nix-moltbot, agenix }:
+  outputs = { self, nixpkgs, nix-openclaw, agenix }:
     let
       lib = nixpkgs.lib;
       systems = [ "x86_64-linux" "aarch64-linux" ];
       forAllSystems = f: lib.genAttrs systems (system: f system);
-      moltbotOverlay = nix-moltbot.overlays.default;
+      clawbotOverlay = nix-openclaw.overlays.default;
     in
     {
       nixosModules.clawdinator = import ./nix/modules/clawdinator.nix;
       nixosModules.default = self.nixosModules.clawdinator;
 
-      overlays.moltbot = moltbotOverlay;
-      overlays.default = moltbotOverlay;
+      overlays.clawbot = clawbotOverlay;
+      overlays.default = clawbotOverlay;
 
       packages = forAllSystems (system:
         let

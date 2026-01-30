@@ -1,5 +1,5 @@
-moltbot	https://github.com/moltbot/moltbot.git
-nix-moltbot	https://github.com/moltbot/nix-moltbot.git
-moltinators	https://github.com/moltbot/moltinators.git
-molthub	https://github.com/moltbot/molthub.git
-nix-steipete-tools	https://github.com/moltbot/nix-steipete-tools.git
+openclaw	https://github.com/openclaw/openclaw.git
+nix-openclaw	https://github.com/openclaw/nix-openclaw.git
+clawdinators	https://github.com/openclaw/clawdinators.git
+clawhub	https://github.com/openclaw/clawhub.git
+nix-steipete-tools	https://github.com/openclaw/nix-steipete-tools.git

@@ -125,7 +125,7 @@ let
 in
 {
   options.services.clawdinator = with lib; {
-    enable = mkEnableOption "CLAWDINATOR (Moltbot gateway on NixOS)";
+    enable = mkEnableOption "CLAWDINATOR (Clawbot gateway on NixOS)";
 
     instanceName = mkOption {
       type = types.str;
@@ -148,7 +148,7 @@ in
     package = mkOption {
       type = types.package;
       default = defaultPackage;
-      description = "Moltbot gateway package (from nix-moltbot overlay).";
+      description = "Clawbot gateway package (from nix-openclaw overlay).";
     };
 
     stateDir = mkOption {
@@ -282,13 +282,13 @@ in
     config = mkOption {
       type = types.attrs;
       default = {};
-      description = "Raw Moltbot config JSON (merged into moltbot.json).";
+      description = "Raw Clawbot config JSON (merged into moltbot.json).";
     };
 
     configFile = mkOption {
       type = types.nullOr types.path;
       default = null;
-      description = "Optional path to a moltbot.json file. Overrides config attr.";
+      description = "Optional path to a moltbot.json config file. Overrides config attr.";
     };
 
     cronJobsFile = mkOption {
@@ -420,7 +420,7 @@ in
     assertions = [
       {
         assertion = (pkgs ? moltbot-gateway) || (pkgs ? moltbot);
-        message = "services.clawdinator requires nix-moltbot overlay (pkgs.moltbot-gateway).";
+        message = "services.clawdinator requires nix-openclaw overlay (pkgs.moltbot-gateway).";
       }
       {
         assertion = cfg.githubApp.enable || cfg.githubPatFile != null;

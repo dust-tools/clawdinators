@@ -1,13 +1,13 @@
 { secrets, ... }:
 {
-  age.secrets."moltinator-github-app.pem".file =
-    "/var/lib/clawd/nix-secrets/moltinator-github-app.pem.age";
-  age.secrets."moltinator-anthropic-api-key".file =
-    "/var/lib/clawd/nix-secrets/moltinator-anthropic-api-key.age";
-  age.secrets."moltinator-openai-api-key-peter-2".file =
-    "/var/lib/clawd/nix-secrets/moltinator-openai-api-key-peter-2.age";
-  age.secrets."moltinator-discord-token".file =
-    "/var/lib/clawd/nix-secrets/moltinator-discord-token.age";
+  age.secrets."clawdinator-github-app.pem".file =
+    "/var/lib/clawd/nix-secrets/clawdinator-github-app.pem.age";
+  age.secrets."clawdinator-anthropic-api-key".file =
+    "/var/lib/clawd/nix-secrets/clawdinator-anthropic-api-key.age";
+  age.secrets."clawdinator-openai-api-key-peter-2".file =
+    "/var/lib/clawd/nix-secrets/clawdinator-openai-api-key-peter-2.age";
+  age.secrets."clawdinator-discord-token".file =
+    "/var/lib/clawd/nix-secrets/clawdinator-discord-token.age";
 
   services.openssh.enable = true;
   networking.firewall.allowedTCPPorts = [ 22 18789 ];
@@ -23,7 +23,7 @@
       mountPoint = "/memory";
     };
 
-    # Raw Moltbot config JSON (schema is upstream). Extend as needed.
+    # Raw Clawbot config JSON (schema is upstream). Extend as needed.
     config = {
       gateway = {
         mode = "local";
@@ -62,20 +62,20 @@
       };
     };
 
-    anthropicApiKeyFile = "/run/agenix/moltinator-anthropic-api-key";
-    openaiApiKeyFile = "/run/agenix/moltinator-openai-api-key-peter-2";
-    discordTokenFile = "/run/agenix/moltinator-discord-token";
+    anthropicApiKeyFile = "/run/agenix/clawdinator-anthropic-api-key";
+    openaiApiKeyFile = "/run/agenix/clawdinator-openai-api-key-peter-2";
+    discordTokenFile = "/run/agenix/clawdinator-discord-token";
 
     githubApp = {
       enable = true;
       appId = "123456";
       installationId = "12345678";
-      privateKeyFile = "/run/agenix/moltinator-github-app.pem";
+      privateKeyFile = "/run/agenix/clawdinator-github-app.pem";
       schedule = "hourly";
     };
 
     selfUpdate.enable = true;
-    selfUpdate.flakePath = "/var/lib/clawd/repos/moltinators";
+    selfUpdate.flakePath = "/var/lib/clawd/repos/clawdinators";
     selfUpdate.flakeHost = "clawdinator-1";
   };
 }

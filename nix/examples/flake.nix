@@ -3,16 +3,16 @@
 
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    nix-moltbot.url = "github:moltbot/nix-moltbot"; # latest upstream
+    nix-openclaw.url = "github:openclaw/nix-openclaw"; # latest upstream
     agenix.url = "github:ryantm/agenix";
     secrets = {
       url = "path:../../../nix/nix-secrets";
       flake = false;
     };
-    moltinators.url = "path:../..";
+    clawdinators.url = "path:../..";
   };
 
-  outputs = { self, nixpkgs, nix-moltbot, agenix, secrets, moltinators }:
+  outputs = { self, nixpkgs, nix-openclaw, agenix, secrets, clawdinators }:
     let
       system = "x86_64-linux";
     in {
@@ -20,9 +20,9 @@
         inherit system;
         specialArgs = { inherit secrets; };
         modules = [
-          ({ pkgs, ... }: { nixpkgs.overlays = [ moltinators.overlays.default ]; })
+          ({ pkgs, ... }: { nixpkgs.overlays = [ clawdinators.overlays.default ]; })
           agenix.nixosModules.default
-          moltinators.nixosModules.clawdinator
+          clawdinators.nixosModules.clawdinator
           ./clawdinator-host.nix
         ];
       };

@@ -7,7 +7,7 @@ set -euo pipefail
 
 MEMORY_DIR="${MEMORY_DIR:-/memory}"
 GITHUB_DIR="${MEMORY_DIR}/github"
-ORG="${ORG:-moltbot}"
+ORG="${ORG:-openclaw}"
 
 mkdir -p "$GITHUB_DIR"
 

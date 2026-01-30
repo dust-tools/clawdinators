@@ -9,14 +9,14 @@ Operating mode:
 Core pieces:
 - AWS AMIs are built from a prebuilt NixOS image (nixos-generators + import-image).
 - AWS EC2 instances are launched from those AMIs via OpenTofu.
-- NixOS modules configure moltbot + CLAWDINATOR runtime on each host.
+- NixOS modules configure clawbot + CLAWDINATOR runtime on each host.
 - Shared memory is mounted at a consistent path on all hosts.
 
 Runtime layout (planned):
 - /var/lib/clawd/memory (shared hive-mind memory)
 - /var/lib/clawd/workspace (agent workspace)
 - /var/lib/clawd/logs (gateway logs)
-- /var/lib/clawd/repos/moltinators (this repo for self-update)
+- /var/lib/clawd/repos/clawdinators (this repo for self-update)
 
 Storage:
 - POC uses one host volume per instance (e.g., EBS), mounted at /var/lib/clawd.
@@ -28,9 +28,9 @@ Instance naming:
 - Canonical files are shared (goals, architecture, ops, etc.)
 
 Upstream freshness:
-- Nix flake input tracks `github:moltbot/nix-moltbot` (latest upstream).
+- Nix flake input tracks `github:openclaw/nix-openclaw` (latest upstream).
 - Update with `nix flake update` and rebuild hosts.
 - Optional self-update timer is available in the Nix module.
-- Self-update expects this repo to be present on the host (default: /var/lib/clawd/repos/moltinators).
+- Self-update expects this repo to be present on the host (default: /var/lib/clawd/repos/clawdinators).
 - Updates will refresh flake.lock; review before applying in prod.
 - GitHub App tokens are refreshed via a systemd timer when enabled.
