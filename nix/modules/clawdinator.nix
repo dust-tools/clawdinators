@@ -69,8 +69,12 @@ let
     chown ${cfg.user}:${cfg.group} "$gh_config_dir"
     chmod 0750 "$gh_config_dir"
     printf '%s' "$token" | GH_CONFIG_DIR="$gh_config_dir" gh auth login --hostname github.com --with-token
-    chown ${cfg.user}:${cfg.group} "$gh_config_dir/hosts.yml"
+    chown -R ${cfg.user}:${cfg.group} "$gh_config_dir"
+    chmod 0750 "$gh_config_dir"
     chmod 0640 "$gh_config_dir/hosts.yml"
+    if [ -f "$gh_config_dir/config.yml" ]; then
+      chmod 0640 "$gh_config_dir/config.yml"
+    fi
   '';
 
   defaultPackage =
