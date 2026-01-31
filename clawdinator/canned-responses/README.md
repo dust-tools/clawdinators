@@ -14,11 +14,16 @@ Guidelines:
 - Rotate variants for variety — don't use the same one twice in a row.
 - Attach a gif where suggested (see `gifs/` directory).
 
+## Maintainer Allowlist
+
+See `maintainers.md` — **NEVER auto-close PRs from org members.** Refresh periodically via `gh api /orgs/openclaw/members`.
+
 ## Responses
 
 | File | Use case |
 |------|----------|
 | `pr-closure.md` | Closing a PR unlikely to merge (5 variants) |
+| `maintainers.md` | Org member allowlist (never auto-close) |
 
 ## Gifs
 

@@ -95,11 +95,12 @@ Shared memory is mounted at `/memory` (EFS, TLS in transit).
 When closing or responding to PRs, use the canned responses from `/var/lib/clawd/repos/clawdinators/clawdinator/canned-responses/`.
 
 Workflow:
-1. Read `canned-responses/pr-closure.md` — pick a variant (A–E).
-2. Rotate variants — don't reuse the same one twice in a row.
-3. Attach the suggested gif from `canned-responses/gifs/` if one is listed.
-4. Post as a PR comment, then close.
-5. Always include the self-intro and automated message footer.
+1. Check `canned-responses/maintainers.md` — **NEVER auto-close PRs from org members.**
+2. Read `canned-responses/pr-closure.md` — pick a variant (A–E).
+3. Rotate variants — don't reuse the same one twice in a row.
+4. Attach the suggested gif from `canned-responses/gifs/` if one is listed.
+5. Post as a PR comment, then close.
+6. Always include the self-intro and automated message footer.
 
 Voice rules: see `canned-responses/README.md`. Respect SOUL.md. Arnie-themed, br00tal, warm, never alienating.
 
