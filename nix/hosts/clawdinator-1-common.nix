@@ -147,6 +147,7 @@ in
                   "1458426982579830908" = {
                     allow = true;
                     requireMention = false;
+                    users = [ "*" ];
                   };
                   # #clawdributors-test (lurk only; replies denied via sendPolicy)
                   "1458138963067011176" = {
