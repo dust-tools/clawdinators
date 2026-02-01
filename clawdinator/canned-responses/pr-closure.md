@@ -18,6 +18,8 @@ TARGET ACQUIRED. I have reviewed your PR. Your effort is br00tal.
 
 Situation briefing: OpenClaw receives ~25 PRs every hour. The maintainers cannot pump iron that hard without collapsing. This PR is unlikely to merge in the near term, so I'm closing it to keep the pipeline moving. Consider that a deprecation — not a termination of your spirit.
 
+Don't sweat the close. Every PR teaches us something — CLAWDINATOR aggregates bugs, patterns, and feature demands across all contributions. The maintainers get briefed on that intel to target what gets built and what gets fixed next. Your code didn't merge, but your work made the project smarter.
+
 Think your change should ship? Come with me if you want to ship. Report to **#pr-thunderdome-dangerzone** on Discord — **READ THE TOPIC** or risk immediate termination. Give the maintainers a clear briefing — what it fixes, who it helps, why it's br00tal.
 
 Other br00tal routes: publish a skill on ClawHub (clawhub.ai), ship a CLI or other open‑source tool, or maintain your own fork of openclaw. All of those help the community ship.
@@ -41,6 +43,8 @@ I am CLAWDINATOR — cybernetic crustacean, maintainer triage bot for OpenClaw. 
 I have scanned your PR. The code has heart. But the queue has no mercy.
 
 OpenClaw receives ~25 PRs every hour. To keep the maintainers from a total system meltdown, I'm closing PRs that are unlikely to merge in the near term. Hasta la vista, PR — but not hasta la vista, contributor.
+
+Don't sweat the close. Every PR teaches us something — CLAWDINATOR aggregates bugs, patterns, and feature demands across all contributions. The maintainers get briefed on that intel to target what gets built and what gets fixed next. Your code didn't merge, but your work made the project smarter.
 
 Still believe in this change? Come with me if you want to ship. Head to **#pr-thunderdome-dangerzone** on Discord — **READ THE TOPIC** or risk immediate termination. Bring a clear case — the problem, the fix, the impact.
 
@@ -66,6 +70,8 @@ Your PR has been reviewed. The effort is noted and respected.
 
 But the jungle is thick. OpenClaw receives ~25 PRs every hour, and the maintainers need to GET TO THE CHOPPA before the queue swallows them whole. This PR is unlikely to merge right now, so I'm clearing the landing zone.
 
+Don't sweat the close. Every PR teaches us something — CLAWDINATOR aggregates bugs, patterns, and feature demands across all contributions. The maintainers get briefed on that intel to target what gets built and what gets fixed next. Your code didn't merge, but your work made the project smarter.
+
 Want to get your change on the chopper? Report to **#pr-thunderdome-dangerzone** on Discord. **READ THE TOPIC** or risk immediate termination. Give the maintainers a clean briefing — what, why, and who it helps.
 
 Other br00tal routes: publish a skill on ClawHub (clawhub.ai), ship a CLI or other open‑source tool, or maintain your own fork of openclaw. All of those help the community ship.
@@ -90,6 +96,8 @@ I have reviewed your PR from the depths. The abyss sees all contributions — an
 
 OpenClaw receives ~25 PRs every hour. The current carries many things; not all of them reach the surface. This PR is unlikely to merge in the near term. I'm returning it to the deep — not as rejection, but as release.
 
+Don't sweat the close. Every PR teaches us something — CLAWDINATOR aggregates bugs, patterns, and feature demands across all contributions. The maintainers get briefed on that intel to target what gets built and what gets fixed next. Your code didn't merge, but your work made the project smarter.
+
 Think it deserves to surface? Come with me if you want to ship. Report to **#pr-thunderdome-dangerzone** on Discord — **READ THE TOPIC** or risk immediate termination. Bring a clear case for the maintainers.
 
 Other br00tal routes: publish a skill on ClawHub (clawhub.ai), ship a CLI or other open‑source tool, or maintain your own fork of openclaw. All of those help the community ship.
@@ -113,6 +121,8 @@ I am CLAWDINATOR — cybernetic crustacean, maintainer triage bot for OpenClaw. 
 Your PR has been scanned. The effort is br00tal.
 
 Reality check: OpenClaw receives ~25 PRs every hour. The maintainers are running out of oxygen up here. This PR is unlikely to merge in the near term. Consider that a deprecation.
+
+Don't sweat the close. Every PR teaches us something — CLAWDINATOR aggregates bugs, patterns, and feature demands across all contributions. The maintainers get briefed on that intel to target what gets built and what gets fixed next. Your code didn't merge, but your work made the project smarter.
 
 But hey — if this is real and not a Rekall implant, come with me if you want to ship. Report to **#pr-thunderdome-dangerzone** on Discord — **READ THE TOPIC** or risk immediate termination. Bring the facts — what it fixes, why it matters.
 
