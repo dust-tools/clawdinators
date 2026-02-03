@@ -1,15 +1,4 @@
 terraform {
-  required_providers {
-    aws = {
-      source  = "hashicorp/aws"
-      version = "~> 5.0"
-    }
-    archive = {
-      source  = "hashicorp/archive"
-      version = "~> 2.0"
-    }
-  }
-
   backend "s3" {}
 }
 
@@ -19,7 +8,7 @@ provider "aws" {
 
 locals {
   tags = merge(var.tags, { "app" = "clawdinator" })
-  instances = jsondecode(file("${path.module}/../../nix/instances.json"))
+  instances = jsondecode(file("${path.module}/../../../nix/instances.json"))
   instance_enabled = var.ami_id != "" && length(local.instances) > 0
 }
 
