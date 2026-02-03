@@ -25,4 +25,4 @@ Update with incidents, fixes, and operational lessons.
 - AMI: ami-027054fbbee8d71cc (multi-instance fleet).
 - Instances:
   - clawdinator-1: i-0b6060699bb413d82 (IP 18.198.25.107, DNS ec2-18-198-25-107.eu-central-1.compute.amazonaws.com).
-  - clawdinator-2: i-09a227ae1daa5d108 (IP 3.74.41.147, DNS ec2-3-74-41-147.eu-central-1.compute.amazonaws.com).
+  - clawdinator-2: i-07bcba2bb924dfc93 (IP 3.66.165.141, DNS ec2-3-66-165-141.eu-central-1.compute.amazonaws.com).
