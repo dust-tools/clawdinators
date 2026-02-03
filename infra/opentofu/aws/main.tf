@@ -174,6 +174,18 @@ data "aws_iam_policy_document" "ami_importer" {
   }
 
   statement {
+    sid = "FleetInstances"
+    actions = [
+      "ec2:RunInstances",
+      "ec2:TerminateInstances",
+      "ec2:CreateTags",
+      "ec2:DeleteTags",
+      "ec2:ModifyInstanceAttribute"
+    ]
+    resources = ["*"]
+  }
+
+  statement {
     sid = "TerraformLockTable"
     actions = [
       "dynamodb:DescribeTable",
@@ -189,6 +201,12 @@ data "aws_iam_policy_document" "ami_importer" {
     sid = "PassVmImportRole"
     actions = ["iam:PassRole"]
     resources = [aws_iam_role.vmimport.arn]
+  }
+
+  statement {
+    sid = "PassInstanceRole"
+    actions = ["iam:PassRole"]
+    resources = [aws_iam_role.instance.arn]
   }
 }
 
