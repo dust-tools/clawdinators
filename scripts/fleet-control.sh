@@ -32,6 +32,16 @@ fi
 control_token="$(cat "${token_file}")"
 caller="$(cat "${caller_file}")"
 
+region="${AWS_REGION:-eu-central-1}"
+export AWS_ACCESS_KEY_ID="$(cat "${access_key_file}")"
+export AWS_SECRET_ACCESS_KEY="$(cat "${secret_key_file}")"
+export AWS_REGION="${region}"
+
+if [ "${action}" = "status" ]; then
+  /var/lib/clawd/repos/clawdinators/scripts/fleet-status.sh
+  exit 0
+fi
+
 if [ "${action}" = "deploy" ]; then
   if [ -z "${target}" ]; then
     echo "Target required. Usage: fleet-control.sh deploy <all|clawdinator-2>" >&2
@@ -52,10 +62,6 @@ payload="$(jq -n \
   --arg control_token "${control_token}" \
   '{action: $action, target: $target, caller: $caller, ami_override: $ami_override, control_token: $control_token}')"
 
-region="${AWS_REGION:-eu-central-1}"
-export AWS_ACCESS_KEY_ID="$(cat "${access_key_file}")"
-export AWS_SECRET_ACCESS_KEY="$(cat "${secret_key_file}")"
-
 response_file="$(mktemp)"
 aws lambda invoke \
   --function-name "clawdinator-control-api" \
@@ -66,16 +72,5 @@ aws lambda invoke \
 
 response="$(cat "${response_file}")"
 rm -f "${response_file}"
-
-if [ "${action}" = "status" ]; then
-  ok="$(printf '%s' "${response}" | jq -r '.ok')"
-  if [ "${ok}" != "true" ]; then
-    echo "${response}" >&2
-    exit 1
-  fi
-  echo "Name | InstanceId | State | AMI | Public IP"
-  printf '%s' "${response}" | jq -r '.instances[] | "\(.name) | \(.id) | \(.state) | \(.ami) | \(.ip)"'
-  exit 0
-fi
 
 echo "${response}"

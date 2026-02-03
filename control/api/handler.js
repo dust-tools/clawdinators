@@ -1,7 +1,5 @@
 'use strict';
 
-const AWS = require('aws-sdk');
-
 const {
   CONTROL_API_TOKEN,
   GITHUB_TOKEN,
@@ -51,31 +49,6 @@ async function dispatchWorkflow(inputs) {
   }
 }
 
-async function listInstances() {
-  const ec2 = new AWS.EC2();
-  const resp = await ec2
-    .describeInstances({
-      Filters: [{ Name: 'tag:app', Values: ['clawdinator'] }],
-    })
-    .promise();
-
-  const instances = [];
-  for (const reservation of resp.Reservations || []) {
-    for (const instance of reservation.Instances || []) {
-      const tags = instance.Tags || [];
-      const nameTag = tags.find((tag) => tag.Key === 'Name');
-      instances.push({
-        name: nameTag ? nameTag.Value : 'unknown',
-        id: instance.InstanceId,
-        state: instance.State ? instance.State.Name : 'unknown',
-        ami: instance.ImageId,
-        ip: instance.PublicIpAddress || 'n/a',
-      });
-    }
-  }
-
-  return instances;
-}
 
 exports.handler = async (event) => {
   if (!CONTROL_API_TOKEN) {
@@ -115,12 +88,7 @@ exports.handler = async (event) => {
   }
 
   if (action === 'status') {
-    try {
-      const instances = await listInstances();
-      return json(200, { ok: true, instances });
-    } catch (err) {
-      return json(500, { ok: false, error: err.message });
-    }
+    return json(400, { ok: false, error: 'status not supported via api' });
   }
 
   if (action !== 'deploy') {

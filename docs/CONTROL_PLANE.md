@@ -21,10 +21,11 @@ Goal: manage CLAWDINATOR host lifecycle (create/recreate/replace) from **CLAWDIN
 - Infra state must be out‑of‑band and locked.
 
 ## Control Plane Components (KISS)
-- **Control API (AWS Lambda Function URL)**
-  - Authenticated by a shared bearer token.
-  - Dispatches GitHub Actions workflows.
-  - Handles `/fleet status` via AWS DescribeInstances.
+- **Control API (AWS Lambda)**
+  - Authenticated by a shared control token.
+  - Dispatches GitHub Actions workflows (deploy only).
+- **Fleet status**
+  - Fetched locally via AWS CLI using control invoker credentials.
 - **Fleet Control Skill** (runs inside CLAWDINATOR)
   - Calls the Control API via `scripts/fleet-control.sh` (AWS IAM invoke).
   - Enforces policy (no self‑deploy) before calling.
@@ -82,7 +83,7 @@ Example:
 - Also creates new instances if present in desired state.
 
 ### `/fleet status`
-- Returns live fleet status (EC2 describe by tag).
+- Returns live fleet status via AWS CLI (EC2 describe by tag).
 
 ## Access Control (Policy)
 - Shared control token authorizes calls to the Control API.
