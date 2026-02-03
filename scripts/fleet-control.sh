@@ -51,7 +51,7 @@ payload="$(jq -n \
   '{action: $action, target: $target, caller: $caller, ami_override: $ami_override}')"
 
 response="$(curl -sS -X POST \
-  -H "Authorization: Bearer ${control_token}" \
+  -H "X-Clawdinator-Token: ${control_token}" \
   -H "Content-Type: application/json" \
   -d "${payload}" \
   "${api_url}")"

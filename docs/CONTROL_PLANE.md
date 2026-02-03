@@ -39,7 +39,8 @@ Goal: manage CLAWDINATOR host lifecycle (create/recreate/replace) from **CLAWDIN
   - Agenix secrets per instance token.
 
 ## Control API Auth
-- Shared bearer token stored as `clawdinator-control-token.age`.
+- Shared control token stored as `clawdinator-control-token.age`.
+- Token is sent via `X-Clawdinator-Token` header to avoid Lambda URL auth conflicts.
 - Token is injected into instances via bootstrap and read from `/run/agenix/clawdinator-control-token`.
 
 ## Control API Env (Lambda)

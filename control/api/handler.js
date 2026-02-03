@@ -27,10 +27,7 @@ function badRequest(message) {
 }
 
 function getAuthToken(headers) {
-  const auth = headers.authorization || headers.Authorization;
-  if (!auth) return null;
-  const match = auth.match(/Bearer\s+(.+)/i);
-  return match ? match[1] : null;
+  return headers['x-clawdinator-token'] || headers['X-Clawdinator-Token'] || null;
 }
 
 async function dispatchWorkflow(inputs) {

@@ -337,7 +337,7 @@ resource "aws_instance" "clawdinator" {
 data "archive_file" "control_lambda" {
   count       = var.control_api_enabled ? 1 : 0
   type        = "zip"
-  source_dir  = "${path.module}/../../control/api"
+  source_dir  = "${path.module}/../../../control/api"
   output_path = "${path.module}/.terraform/control-api.zip"
 }
 
