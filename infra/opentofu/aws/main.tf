@@ -410,10 +410,9 @@ resource "aws_lambda_function_url" "control" {
 }
 
 resource "aws_lambda_permission" "control_url" {
-  count                   = var.control_api_enabled ? 1 : 0
-  statement_id            = "AllowFunctionUrl"
-  action                  = "lambda:InvokeFunctionUrl"
-  function_name           = aws_lambda_function.control[0].function_name
-  principal               = "*"
-  function_url_auth_type  = "NONE"
+  count         = var.control_api_enabled ? 1 : 0
+  statement_id  = "AllowFunctionUrl"
+  action        = "lambda:InvokeFunctionUrl"
+  function_name = aws_lambda_function.control[0].function_name
+  principal     = "*"
 }
