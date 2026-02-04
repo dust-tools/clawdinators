@@ -51,11 +51,6 @@
             fallbacks = [ ];
           };
           thinkingDefault = "medium";
-          sandbox = {
-            mode = "all";
-            scope = "agent";
-            workspaceAccess = "none";
-          };
         };
 
         list = [
@@ -63,11 +58,6 @@
             id = "babelfish";
             default = true;
             identity.name = "CLAWDINATOR-BABELFISH";
-            sandbox = {
-              mode = "all";
-              scope = "agent";
-              workspaceAccess = "none";
-            };
             tools = {
               profile = "minimal";
               deny = [ "*" ];
