@@ -1,4 +1,4 @@
-{ modulesPath, config, ... }: {
+{ modulesPath, config, pkgs, ... }: {
   imports = [
     (modulesPath + "/virtualisation/ec2-data.nix")
     (modulesPath + "/virtualisation/amazon-init.nix")
@@ -29,4 +29,20 @@
     device = "/dev/disk/by-label/nixos";
     fsType = "ext4";
   };
+
+  systemd.services.fetch-ec2-metadata = {
+    description = "Fetch EC2 metadata";
+    wantedBy = [ "multi-user.target" ];
+    wants = [ "network-online.target" ];
+    after = [ "network-online.target" ];
+    path = [ pkgs.curl ];
+    serviceConfig = {
+      Type = "oneshot";
+      StandardOutput = "journal+console";
+      ExecStart = "${pkgs.bash}/bin/bash ${../../scripts/fetch-ec2-metadata.sh}";
+    };
+  };
+
+  systemd.services.amazon-init.after = [ "fetch-ec2-metadata.service" ];
+  systemd.services.amazon-init.wants = [ "fetch-ec2-metadata.service" ];
 }

@@ -486,6 +486,9 @@ in
           name = "CLAWDINATOR Bot";
           email = "clawdinator[bot]@users.noreply.github.com";
         };
+        safe = {
+          directory = [ "/var/lib/clawd/repos/clawdinators" ];
+        };
       };
     };
 
