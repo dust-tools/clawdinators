@@ -43,3 +43,6 @@ Update with incidents, fixes, and operational lessons.
 - Redeployed babelfish to disable sandbox (docker ENOENT fix):
   - Instance: i-0d8542109946b2005 (IP 18.184.241.54, DNS ec2-18-184-241-54.eu-central-1.compute.amazonaws.com).
   - AMI: ami-004e1c2ade3e2b9e6.
+- Redeployed babelfish to trim forum context output:
+  - Instance: i-09dfb9a32728a2ec9 (IP 3.124.183.184, DNS ec2-3-124-183-184.eu-central-1.compute.amazonaws.com).
+  - AMI: ami-004e1c2ade3e2b9e6.
