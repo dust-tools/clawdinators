@@ -18,21 +18,25 @@ systemctl daemon-reload
 
 wait_for_service() {
   local service="$1"
-  local timeout="${2:-300}"
+  local timeout=300
   local waited=0
 
-  systemctl start "${service}"
+  if [ "$#" -ge 2 ]; then
+    timeout="$2"
+  fi
+
+  systemctl start "$service"
   while true; do
-    if systemctl is-active --quiet "${service}"; then
+    if systemctl is-active --quiet "$service"; then
       return 0
     fi
-    if systemctl is-failed --quiet "${service}"; then
-      systemctl status "${service}" --no-pager
+    if systemctl is-failed --quiet "$service"; then
+      systemctl status "$service" --no-pager
       return 1
     fi
-    if [ "${waited}" -ge "${timeout}" ]; then
-      echo "Timed out waiting for ${service}" >&2
-      systemctl status "${service}" --no-pager
+    if [ "$waited" -ge "$timeout" ]; then
+      echo "Timed out waiting for $service" >&2
+      systemctl status "$service" --no-pager
       return 1
     fi
     sleep 2
