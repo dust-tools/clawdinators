@@ -18,9 +18,21 @@ secrets_archive="${6:-secrets.tar.zst}"
 repo_seeds_archive="${7:-repo-seeds.tar.zst}"
 
 sentinel="${secrets_dir}/.bootstrap-ok"
+prefix_marker="${secrets_dir}/.bootstrap-prefix"
+reset_secrets=false
 if [ -f "${sentinel}" ]; then
-  echo "clawdinator-bootstrap: already initialized"
-  exit 0
+  if [ -f "${prefix_marker}" ]; then
+    existing_prefix="$(cat "${prefix_marker}" || true)"
+    if [ "${existing_prefix}" = "${prefix}" ]; then
+      echo "clawdinator-bootstrap: already initialized"
+      exit 0
+    fi
+    echo "clawdinator-bootstrap: prefix changed (${existing_prefix} -> ${prefix}); reinitializing"
+    reset_secrets=true
+  else
+    echo "clawdinator-bootstrap: prefix marker missing; reinitializing"
+    reset_secrets=true
+  fi
 fi
 
 s3_base="s3://${bucket}/${prefix}"
@@ -31,6 +43,11 @@ cleanup() {
 trap cleanup EXIT
 
 mkdir -p "${secrets_dir}" "${repo_seeds_dir}" "$(dirname "${age_key_path}")"
+
+if [ "${reset_secrets}" = "true" ]; then
+  rm -f "${secrets_dir}"/*.age
+  rm -f "${sentinel}" "${prefix_marker}"
+fi
 
 aws s3 cp "${s3_base}/${secrets_archive}" "${workdir}/secrets.tar.zst" --only-show-errors
 aws s3 cp "${s3_base}/${repo_seeds_archive}" "${workdir}/repo-seeds.tar.zst" --only-show-errors
@@ -56,5 +73,6 @@ chmod -R u=rw,go= "${secrets_dir}" || true
 
 tar --zstd -xf "${workdir}/repo-seeds.tar.zst" -C "${repo_seeds_dir}"
 
+printf '%s' "${prefix}" > "${prefix_marker}"
 touch "${sentinel}"
 echo "clawdinator-bootstrap: done"
