@@ -114,6 +114,18 @@ let
         "${repo.name}\t${repo.url}\t${branch}")
       cfg.repoSeeds);
   toolchain = import ../tools/clawdinator-tools.nix { inherit pkgs; };
+
+  flakeLock = builtins.fromJSON (builtins.readFile ../../flake.lock);
+  nixOpenclawLocked = flakeLock.nodes."nix-openclaw".locked;
+  nixpkgsLocked = flakeLock.nodes."nixpkgs".locked;
+
+  openclawPinnedRev =
+    if cfg.package ? passthru && cfg.package.passthru ? pinnedRev then
+      cfg.package.passthru.pinnedRev
+    else if pkgs ? openclaw-gateway && pkgs.openclaw-gateway ? passthru && pkgs.openclaw-gateway.passthru ? pinnedRev then
+      pkgs.openclaw-gateway.passthru.pinnedRev
+    else
+      null;
   toolchainMd = lib.concatMapStringsSep "\n"
     (tool: "- **${tool.name}** — ${tool.description}")
     toolchain.docs;
@@ -580,6 +592,26 @@ in
         - **memory-edit** — exclusive-lock in-place edit for `/memory`.
         - **clawdinator-gh-refresh** — mint GitHub App token + refresh GH auth (no sudo).
       '';
+    };
+
+    environment.etc."clawdinator/build-info.json" = {
+      mode = "0644";
+      text = builtins.toJSON {
+        clawdinators = {
+          rev = config.system.configurationRevision;
+        };
+        nixOpenclaw = {
+          rev = nixOpenclawLocked.rev;
+          lastModified = nixOpenclawLocked.lastModified;
+        };
+        nixpkgs = {
+          rev = nixpkgsLocked.rev;
+          lastModified = nixpkgsLocked.lastModified;
+        };
+        openclaw = {
+          rev = openclawPinnedRev;
+        };
+      };
     };
     environment.etc."clawdinator/pi-settings.json" = {
       mode = "0644";

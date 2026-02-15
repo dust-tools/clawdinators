@@ -4,6 +4,9 @@ let
 in
 {
   packages = [
+    (pkgs.writeShellScriptBin "clawdinator-version" ''
+      exec ${pkgs.bash}/bin/bash ${../../scripts/clawdinator-version.sh} "$@"
+    '')
     pkgs.bash
     pkgs.gh
     pkgs.git
@@ -23,6 +26,7 @@ in
   ];
 
   docs = [
+    { name = "clawdinator-version"; description = "Print deployed versions (clawdinators + nix-openclaw + nixpkgs + openclaw) and approximate ages."; }
     { name = "bash"; description = "Shell runtime for CLAWDINATOR scripts."; }
     { name = "gh"; description = "GitHub CLI for repo + PR inventory."; }
     { name = "openclaw-gateway"; description = "CLAWDINATOR runtime (Clawbot gateway)."; }
