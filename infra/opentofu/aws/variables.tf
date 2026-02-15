@@ -9,6 +9,18 @@ variable "bucket_name" {
   default     = "clawdinator-images-eu1-20260107165216"
 }
 
+variable "pr_intent_bucket_name" {
+  description = "Public S3 bucket name for PR intent artifacts. Leave empty to derive a per-account default (openclaw-pr-intent-<account_id>)."
+  type        = string
+  default     = ""
+}
+
+variable "pr_intent_bucket_versioning_enabled" {
+  description = "Enable S3 versioning for the public PR intent bucket (useful while iterating on outputs)."
+  type        = bool
+  default     = true
+}
+
 variable "ci_user_name" {
   description = "IAM user used by CI."
   type        = string
@@ -21,10 +33,20 @@ variable "tags" {
   default     = {}
 }
 
+variable "manage_instances" {
+  description = "Whether to manage (create/update/destroy) the CLAWDINATOR EC2 instances and related networking resources."
+  type        = bool
+  default     = true
+}
+
 variable "ami_id" {
   description = "AMI ID for CLAWDINATOR instances."
   type        = string
   default     = ""
+  validation {
+    condition     = !var.manage_instances || var.ami_id != ""
+    error_message = "ami_id is required when manage_instances is true."
+  }
 }
 
 variable "root_volume_size_gb" {
@@ -38,8 +60,8 @@ variable "ssh_public_key" {
   type        = string
   default     = ""
   validation {
-    condition     = var.ami_id == "" || length(var.ssh_public_key) > 0
-    error_message = "ssh_public_key is required when ami_id is set."
+    condition     = !var.manage_instances || length(var.ssh_public_key) > 0
+    error_message = "ssh_public_key is required when manage_instances is true."
   }
 }
 

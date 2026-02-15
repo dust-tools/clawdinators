@@ -441,6 +441,47 @@ in
         description = "GitHub org to sync.";
       };
     };
+
+    publicS3 = {
+      enable = mkEnableOption "Publish a public-safe subtree from /memory to a public S3 bucket";
+
+      schedule = mkOption {
+        type = types.str;
+        default = "*:0/10";
+        description = "systemd OnCalendar schedule for public S3 publish (default: every 10 min).";
+      };
+
+      region = mkOption {
+        type = types.str;
+        default = "eu-central-1";
+        description = "AWS region for the public S3 bucket.";
+      };
+
+      bucket = mkOption {
+        type = types.str;
+        default = "";
+        description = "Destination S3 bucket name (public-read/list bucket).";
+      };
+
+      # Keep this narrow and explicit: publish only the public-safe subtree.
+      sourceDir = mkOption {
+        type = types.str;
+        default = "${cfg.memoryDir}/pr-intent";
+        description = "Local directory tree to publish to S3 (should contain only public-safe files).";
+      };
+
+      destPrefix = mkOption {
+        type = types.str;
+        default = "";
+        description = "Optional S3 key prefix under the bucket (leave empty to publish at bucket root).";
+      };
+
+      stateDir = mkOption {
+        type = types.str;
+        default = "${cfg.stateDir}/public-s3";
+        description = "State directory for public S3 publishing (stamp + lock).";
+      };
+    };
   };
 
   config = lib.mkIf cfg.enable {
@@ -467,6 +508,10 @@ in
       {
         assertion = (!cfg.memoryEfs.enable) || (cfg.memoryEfs.fileSystemId != "");
         message = "services.clawdinator.memoryEfs requires fileSystemId.";
+      }
+      {
+        assertion = (!cfg.publicS3.enable) || (cfg.publicS3.bucket != "");
+        message = "services.clawdinator.publicS3 requires bucket.";
       }
     ];
 
@@ -590,25 +635,27 @@ in
       ]
     );
 
-    systemd.tmpfiles.rules = [
-      "d ${cfg.stateDir} 0750 ${cfg.user} ${cfg.group} - -"
-      "d ${cfg.stateDir}/.pi 0750 ${cfg.user} ${cfg.group} - -"
-      "d ${cfg.stateDir}/.pi/agent 0750 ${cfg.user} ${cfg.group} - -"
-      "L+ ${cfg.stateDir}/.pi/agent/settings.json - - - - /etc/clawdinator/pi-settings.json"
-      "d ${workspaceDir} 0750 ${cfg.user} ${cfg.group} - -"
-      "d ${logDir} 0750 ${cfg.user} ${cfg.group} - -"
-      "d ${ghConfigDir} 0750 ${cfg.user} ${cfg.group} - -"
-      "d /run/clawd 0750 ${cfg.user} ${cfg.group} - -"
-      "z /run/clawd 0750 ${cfg.user} ${cfg.group} - -"
-      "f /run/clawd/github-app.env 0640 ${cfg.user} ${cfg.group} - -"
-      "z /run/clawd/github-app.env 0640 ${cfg.user} ${cfg.group} - -"
-      "d ${cfg.memoryDir} 0750 ${cfg.user} ${cfg.group} - -"
-      "d ${repoSeedBaseDir} 0750 ${cfg.user} ${cfg.group} - -"
-      "d /usr/local/bin 0755 root root - -"
-      "L+ /usr/local/bin/memory-read - - - - /etc/clawdinator/bin/memory-read"
-      "L+ /usr/local/bin/memory-write - - - - /etc/clawdinator/bin/memory-write"
-      "L+ /usr/local/bin/memory-edit - - - - /etc/clawdinator/bin/memory-edit"
-    ];
+    systemd.tmpfiles.rules =
+      [
+        "d ${cfg.stateDir} 0750 ${cfg.user} ${cfg.group} - -"
+        "d ${cfg.stateDir}/.pi 0750 ${cfg.user} ${cfg.group} - -"
+        "d ${cfg.stateDir}/.pi/agent 0750 ${cfg.user} ${cfg.group} - -"
+        "L+ ${cfg.stateDir}/.pi/agent/settings.json - - - - /etc/clawdinator/pi-settings.json"
+        "d ${workspaceDir} 0750 ${cfg.user} ${cfg.group} - -"
+        "d ${logDir} 0750 ${cfg.user} ${cfg.group} - -"
+        "d ${ghConfigDir} 0750 ${cfg.user} ${cfg.group} - -"
+        "d /run/clawd 0750 ${cfg.user} ${cfg.group} - -"
+        "z /run/clawd 0750 ${cfg.user} ${cfg.group} - -"
+        "f /run/clawd/github-app.env 0640 ${cfg.user} ${cfg.group} - -"
+        "z /run/clawd/github-app.env 0640 ${cfg.user} ${cfg.group} - -"
+        "d ${cfg.memoryDir} 0750 ${cfg.user} ${cfg.group} - -"
+        "d ${repoSeedBaseDir} 0750 ${cfg.user} ${cfg.group} - -"
+        "d /usr/local/bin 0755 root root - -"
+        "L+ /usr/local/bin/memory-read - - - - /etc/clawdinator/bin/memory-read"
+        "L+ /usr/local/bin/memory-write - - - - /etc/clawdinator/bin/memory-write"
+        "L+ /usr/local/bin/memory-edit - - - - /etc/clawdinator/bin/memory-edit"
+      ]
+      ++ lib.optional cfg.publicS3.enable "d ${cfg.publicS3.stateDir} 0750 ${cfg.user} ${cfg.group} - -";
 
     fileSystems = lib.mkIf cfg.memoryEfs.enable {
       "${cfg.memoryEfs.mountPoint}" = {
@@ -850,6 +897,40 @@ in
       wantedBy = [ "timers.target" ];
       timerConfig = {
         OnCalendar = cfg.githubSync.schedule;
+        Persistent = true;
+      };
+    };
+
+    systemd.services.clawdinator-public-s3-publish = lib.mkIf cfg.publicS3.enable {
+      description = "CLAWDINATOR public S3 publish (mirror public-safe memory subtree)";
+      after =
+        [ "network-online.target" ]
+        ++ lib.optional cfg.memoryEfs.enable "remote-fs.target"
+        ++ lib.optional cfg.memoryEfs.enable "clawdinator-memory-init.service";
+      wants = [ "network-online.target" ] ++ lib.optional cfg.memoryEfs.enable "remote-fs.target";
+      serviceConfig = {
+        Type = "oneshot";
+        User = cfg.user;
+        Group = cfg.group;
+      };
+      environment = {
+        AWS_REGION = cfg.publicS3.region;
+        AWS_DEFAULT_REGION = cfg.publicS3.region;
+      };
+      path = [ pkgs.awscli2 pkgs.coreutils pkgs.findutils pkgs.util-linux ];
+      script = ''
+        exec ${../../scripts/sync-public-s3-tree.sh} \
+          ${lib.escapeShellArg cfg.publicS3.sourceDir} \
+          ${lib.escapeShellArg cfg.publicS3.bucket} \
+          ${lib.escapeShellArg cfg.publicS3.destPrefix} \
+          ${lib.escapeShellArg cfg.publicS3.stateDir}
+      '';
+    };
+
+    systemd.timers.clawdinator-public-s3-publish = lib.mkIf cfg.publicS3.enable {
+      wantedBy = [ "timers.target" ];
+      timerConfig = {
+        OnCalendar = cfg.publicS3.schedule;
         Persistent = true;
       };
     };

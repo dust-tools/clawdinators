@@ -128,6 +128,9 @@ in
             primary = "openai/gpt-5.2-codex";
             fallbacks = [ "anthropic/claude-opus-4-6" ];
           };
+
+          # Default thinking level for reasoning-capable models (GPT-5.2/Codex).
+          thinkingDefault = "high";
         };
         agents.list = [
           {

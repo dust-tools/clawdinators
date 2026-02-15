@@ -13,8 +13,9 @@ export AWS_ACCESS_KEY_ID=...
 export AWS_SECRET_ACCESS_KEY=...
 export AWS_REGION=eu-central-1
 export TF_VAR_aws_region=eu-central-1
-export TF_VAR_ami_id=ami-...   # leave empty to skip instance creation
-export TF_VAR_ssh_public_key="$(cat ~/.ssh/id_ed25519.pub)"   # required when ami_id is set
+export TF_VAR_manage_instances=true
+export TF_VAR_ami_id=ami-...   # required when manage_instances is true
+export TF_VAR_ssh_public_key="$(cat ~/.ssh/id_ed25519.pub)"   # required when manage_instances is true
 ```
 
 ### Remote state (S3 + Dynamo)
@@ -44,6 +45,7 @@ export TF_VAR_github_token=...
 
 ## Outputs
 - `bucket_name`
+- `pr_intent_bucket_name`
 - `aws_region`
 - `ci_user_name`
 - `access_key_id`

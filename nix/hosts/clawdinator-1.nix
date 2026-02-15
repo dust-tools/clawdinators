@@ -21,4 +21,14 @@
 
   networking.firewall.allowedTCPPorts = [ 22 ];
 
+  # Publish PR intent artifacts from EFS to the public bucket.
+  # (Timer + oneshot service; safe to run without stopping the gateway.)
+  services.clawdinator.publicS3 = {
+    enable = true;
+    bucket = "openclaw-pr-intent";
+    region = "eu-central-1";
+    sourceDir = "/memory/pr-intent";
+    # schedule = "*:0/10"; # default
+  };
+
 }

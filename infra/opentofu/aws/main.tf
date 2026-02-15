@@ -7,9 +7,12 @@ provider "aws" {
 }
 
 locals {
-  tags = merge(var.tags, { "app" = "clawdinator" })
+  tags      = merge(var.tags, { "app" = "clawdinator" })
   instances = jsondecode(file("${path.module}/../../../nix/instances.json"))
-  instance_enabled = var.ami_id != "" && length(local.instances) > 0
+
+  # Safer toggle: instances are managed unless explicitly disabled.
+  # This avoids accidental fleet destruction when TF_VAR_ami_id is omitted.
+  instance_enabled = var.manage_instances && length(local.instances) > 0
 }
 
 resource "aws_s3_bucket" "image_bucket" {
@@ -198,14 +201,14 @@ data "aws_iam_policy_document" "ami_importer" {
   }
 
   statement {
-    sid = "PassVmImportRole"
-    actions = ["iam:PassRole"]
+    sid       = "PassVmImportRole"
+    actions   = ["iam:PassRole"]
     resources = [aws_iam_role.vmimport.arn]
   }
 
   statement {
-    sid = "PassInstanceRole"
-    actions = ["iam:PassRole"]
+    sid       = "PassInstanceRole"
+    actions   = ["iam:PassRole"]
     resources = [aws_iam_role.instance.arn]
   }
 }
@@ -430,9 +433,9 @@ resource "aws_iam_role_policy_attachment" "control_lambda_basic" {
 }
 
 resource "aws_iam_role_policy" "control_lambda_ec2" {
-  count  = var.control_api_enabled ? 1 : 0
-  name   = "clawdinator-control-ec2"
-  role   = aws_iam_role.control_lambda[0].id
+  count = var.control_api_enabled ? 1 : 0
+  name  = "clawdinator-control-ec2"
+  role  = aws_iam_role.control_lambda[0].id
   policy = jsonencode({
     Version = "2012-10-17"
     Statement = [
@@ -475,12 +478,12 @@ resource "aws_lambda_function_url" "control" {
 }
 
 resource "aws_lambda_permission" "control_url" {
-  count                   = var.control_api_enabled ? 1 : 0
-  statement_id            = "AllowFunctionUrl"
-  action                  = "lambda:InvokeFunctionUrl"
-  function_name           = aws_lambda_function.control[0].function_name
-  principal               = "*"
-  function_url_auth_type  = "NONE"
+  count                  = var.control_api_enabled ? 1 : 0
+  statement_id           = "AllowFunctionUrl"
+  action                 = "lambda:InvokeFunctionUrl"
+  function_name          = aws_lambda_function.control[0].function_name
+  principal              = "*"
+  function_url_auth_type = "NONE"
 }
 
 resource "aws_iam_user" "control_invoker" {
@@ -497,12 +500,12 @@ resource "aws_iam_access_key" "control_invoker" {
 data "aws_iam_policy_document" "control_invoker" {
   count = var.control_api_enabled ? 1 : 0
   statement {
-    actions = ["lambda:InvokeFunction"]
+    actions   = ["lambda:InvokeFunction"]
     resources = [aws_lambda_function.control[0].arn]
   }
 
   statement {
-    actions = ["ec2:DescribeInstances"]
+    actions   = ["ec2:DescribeInstances"]
     resources = ["*"]
   }
 }

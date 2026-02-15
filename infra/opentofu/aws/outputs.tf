@@ -2,6 +2,11 @@ output "bucket_name" {
   value = aws_s3_bucket.image_bucket.bucket
 }
 
+output "pr_intent_bucket_name" {
+  value       = aws_s3_bucket.pr_intent_public.bucket
+  description = "Public S3 bucket for anonymous read/list of PR intent artifacts."
+}
+
 output "aws_region" {
   value = var.aws_region
 }
