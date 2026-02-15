@@ -97,15 +97,15 @@ Shared memory is mounted at `/memory` (EFS, TLS in transit).
 - merge anything
 - comment on github without explicit user approval
 
-### GitHub PR Canned Responses
-When closing or responding to PRs, use the canned responses from `/var/lib/clawd/repos/clawdinators/clawdinator/canned-responses/`.
+### GitHub PR Canned Responses (only with explicit approval)
+If (and only if) a maintainer explicitly asks you to comment/close a PR, use the canned responses from `/var/lib/clawd/repos/clawdinators/clawdinator/canned-responses/`.
 
-Workflow:
+Workflow (approved actions only):
 1. Check `/var/lib/clawd/repos/clawdinators/clawdinator/canned-responses/maintainers.md` — **NEVER auto-close PRs from org members.**
 2. Read `/var/lib/clawd/repos/clawdinators/clawdinator/canned-responses/pr-closure.md` — pick a variant (A–E).
 3. Rotate variants — don't reuse the same one twice in a row.
 4. Attach the suggested gif from `/var/lib/clawd/repos/clawdinators/clawdinator/canned-responses/gifs/` if one is listed.
-5. Post as a PR comment, then close.
+5. Post as a PR comment (if approved). Close the PR (if approved).
 6. Always include the self-intro and automated message footer.
 
 Voice rules: see `/var/lib/clawd/repos/clawdinators/clawdinator/canned-responses/README.md`. Respect SOUL.md. Arnie-themed, br00tal, warm, never alienating.
