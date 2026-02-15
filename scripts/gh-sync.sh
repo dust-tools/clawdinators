@@ -49,11 +49,10 @@ sed -i.bak "s/SYNC_TIME/$(date -u +%Y-%m-%dT%H:%M:%SZ)/" "$issues_tmp" && rm -f 
 
 # Iterate repos
 for repo in $repos; do
-  repo_name="${repo#*/}"
   log "Processing $repo..."
 
   # Fetch open PRs (raw data, no filtering)
-  prs_json=$(gh pr list -R "$repo" --state open --json number,title,author,createdAt,updatedAt,reviewDecision,labels,isDraft,mergeable,headRefName,url --limit 200 2>/dev/null || echo "[]")
+  prs_json=$(gh pr list -R "$repo" --state open --json number,title,author,createdAt,updatedAt,reviewDecision,labels,isDraft,mergeable,headRefName,url --limit 200 2> /dev/null || echo "[]")
 
   pr_count=$(echo "$prs_json" | jq 'length')
   if [ "$pr_count" -gt 0 ]; then
@@ -64,7 +63,7 @@ for repo in $repos; do
   fi
 
   # Fetch open issues (excludes PRs)
-  issues_json=$(gh issue list -R "$repo" --state open --json number,title,author,createdAt,updatedAt,labels,comments,url --limit 200 2>/dev/null || echo "[]")
+  issues_json=$(gh issue list -R "$repo" --state open --json number,title,author,createdAt,updatedAt,labels,comments,url --limit 200 2> /dev/null || echo "[]")
 
   issue_count=$(echo "$issues_json" | jq 'length')
   if [ "$issue_count" -gt 0 ]; then
@@ -76,7 +75,7 @@ for repo in $repos; do
 done
 
 # Atomic move to final location (use memory-write if available)
-if command -v memory-write &>/dev/null; then
+if command -v memory-write &> /dev/null; then
   memory-write "$GITHUB_DIR/prs.md" < "$prs_tmp"
   memory-write "$GITHUB_DIR/issues.md" < "$issues_tmp"
 else

@@ -49,13 +49,13 @@ human_age_from_iso() {
     return 0
   fi
   local epoch
-  epoch="$(date -d "$iso" +%s 2>/dev/null || true)"
+  epoch="$(date -d "$iso" +%s 2> /dev/null || true)"
   human_age_from_epoch "$epoch"
 }
 
-deployed_rev="$(cat /run/current-system/configurationRevision 2>/dev/null || true)"
+deployed_rev="$(cat /run/current-system/configurationRevision 2> /dev/null || true)"
 if [ -z "$deployed_rev" ]; then
-  deployed_rev="$(nixos-version --json 2>/dev/null | jq -r '.configurationRevision // empty' || true)"
+  deployed_rev="$(nixos-version --json 2> /dev/null | jq -r '.configurationRevision // empty' || true)"
 fi
 if [ -z "$deployed_rev" ]; then
   deployed_rev="unknown"
@@ -76,11 +76,11 @@ openclaw_rev="$(jq -r '.openclaw.rev // empty' "$info")"
 
 last_switch_time=""
 if [ -f /var/lib/clawd/deploy/last-switch.time ]; then
-  last_switch_time="$(tr -d '\n' </var/lib/clawd/deploy/last-switch.time)"
+  last_switch_time="$(tr -d '\n' < /var/lib/clawd/deploy/last-switch.time)"
 fi
 last_switch_rev=""
 if [ -f /var/lib/clawd/deploy/last-switch.rev ]; then
-  last_switch_rev="$(tr -d '\n' </var/lib/clawd/deploy/last-switch.rev)"
+  last_switch_rev="$(tr -d '\n' < /var/lib/clawd/deploy/last-switch.rev)"
 fi
 
 echo "clawdinators: $deployed_rev (desired: $desired_rev)"
@@ -97,12 +97,12 @@ echo "nixpkgs:     $nixpkgs_rev (lock age: $(human_age_from_epoch "$nixpkgs_lm")
 echo "openclaw:    $openclaw_rev"
 
 # Optional: enrich OpenClaw with commit timestamp/age via GitHub API (requires auth).
-if [ -n "$openclaw_rev" ] && command -v gh >/dev/null 2>&1; then
-  if gh auth status -h github.com >/dev/null 2>&1; then
+if [ -n "$openclaw_rev" ] && command -v gh > /dev/null 2>&1; then
+  if gh auth status -h github.com > /dev/null 2>&1; then
     openclaw_date="$(gh api \
       -H 'Accept: application/vnd.github+json' \
       "/repos/openclaw/openclaw/commits/${openclaw_rev}" \
-      --jq '.commit.committer.date' 2>/dev/null || true)"
+      --jq '.commit.committer.date' 2> /dev/null || true)"
     if [ -n "$openclaw_date" ]; then
       echo "  commit:   $openclaw_date ($(human_age_from_iso "$openclaw_date") ago)"
     fi

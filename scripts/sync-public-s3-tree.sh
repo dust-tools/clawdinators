@@ -31,7 +31,7 @@ if [ ! -f "$stamp_file" ]; then
   touch -t 197001010000 "$stamp_file"
 fi
 
-exec 9>"$lock_file"
+exec 9> "$lock_file"
 if ! flock -n 9; then
   # Another run is in progress.
   exit 0

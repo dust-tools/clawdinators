@@ -27,7 +27,7 @@ fi
 ext="${image_file##*.}"
 ext="$(printf '%s' "${ext}" | tr '[:upper:]' '[:lower:]')"
 case "${ext}" in
-  img|raw)
+  img | raw)
     aws_format="raw"
     ;;
   vhd)

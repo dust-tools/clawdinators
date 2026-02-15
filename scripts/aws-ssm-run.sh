@@ -31,13 +31,13 @@ for _ in $(seq 1 300); do
     --command-id "${command_id}" \
     --details \
     --query 'CommandInvocations[0].Status' \
-    --output text 2>/dev/null || true)"
+    --output text 2> /dev/null || true)"
 
   case "${status}" in
-    Success|Cancelled|TimedOut|Failed)
+    Success | Cancelled | TimedOut | Failed)
       break
       ;;
-    Pending|InProgress|Delayed|Cancelling|None|"")
+    Pending | InProgress | Delayed | Cancelling | None | "")
       sleep 2
       ;;
     *)
@@ -52,9 +52,9 @@ invocation_json="$(aws ssm get-command-invocation \
   --instance-id "${instance_id}" \
   --output json)"
 
-stdout="$(jq -r '.StandardOutputContent // ""' <<<"${invocation_json}")"
-stderr="$(jq -r '.StandardErrorContent // ""' <<<"${invocation_json}")"
-final_status="$(jq -r '.Status' <<<"${invocation_json}")"
+stdout="$(jq -r '.StandardOutputContent // ""' <<< "${invocation_json}")"
+stderr="$(jq -r '.StandardErrorContent // ""' <<< "${invocation_json}")"
+final_status="$(jq -r '.Status' <<< "${invocation_json}")"
 
 if [ -n "${stdout}" ]; then
   echo "${stdout}"

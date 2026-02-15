@@ -9,7 +9,7 @@ mkdir -p "$root/daily" "$root/discord"
 
 index="$root/index.md"
 if [ ! -f "$index" ]; then
-  cat > "$index" <<'EOM'
+  cat > "$index" << 'EOM'
 # Shared Memory Index
 
 - Daily notes live in /memory/daily/YYYY-MM-DD.md

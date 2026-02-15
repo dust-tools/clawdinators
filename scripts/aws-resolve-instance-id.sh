@@ -10,9 +10,9 @@ host="$1"
 
 ids="$(aws ec2 describe-instances \
   --filters \
-    "Name=tag:app,Values=clawdinator" \
-    "Name=tag:Name,Values=${host}" \
-    "Name=instance-state-name,Values=running" \
+  "Name=tag:app,Values=clawdinator" \
+  "Name=tag:Name,Values=${host}" \
+  "Name=instance-state-name,Values=running" \
   --query 'Reservations[].Instances[].InstanceId' \
   --output text)"
 
@@ -22,7 +22,7 @@ if [ -z "${ids}" ] || [ "${ids}" = "None" ]; then
 fi
 
 # If multiple instances match, fail loudly.
-count="$(wc -w <<<"${ids}" | tr -d ' ')"
+count="$(wc -w <<< "${ids}" | tr -d ' ')"
 if [ "${count}" != "1" ]; then
   echo "expected 1 instance for ${host}, got ${count}: ${ids}" >&2
   exit 1

@@ -12,7 +12,7 @@ if [ -z "${format}" ]; then
   ext="${key##*.}"
   ext="$(printf '%s' "${ext}" | tr '[:upper:]' '[:lower:]')"
   case "${ext}" in
-    img|raw)
+    img | raw)
       format="raw"
       ;;
     vhd)
@@ -92,7 +92,7 @@ for _ in {1..120}; do
       echo "${image_id}"
       exit 0
       ;;
-    deleted|deleting|error)
+    deleted | deleting | error)
       message="$(aws ec2 describe-import-snapshot-tasks \
         --region "${region}" \
         --import-task-ids "${task_id}" \

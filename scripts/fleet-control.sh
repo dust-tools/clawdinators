@@ -10,7 +10,6 @@ if [ -z "${action}" ]; then
   exit 1
 fi
 
-api_url_file="/etc/clawdinator/control-api-url"
 token_file="/run/agenix/clawdinator-control-token"
 access_key_file="/run/agenix/clawdinator-control-aws-access-key-id"
 secret_key_file="/run/agenix/clawdinator-control-aws-secret-access-key"
@@ -33,8 +32,10 @@ control_token="$(cat "${token_file}")"
 caller="$(cat "${caller_file}")"
 
 region="${AWS_REGION:-eu-central-1}"
-export AWS_ACCESS_KEY_ID="$(cat "${access_key_file}")"
-export AWS_SECRET_ACCESS_KEY="$(cat "${secret_key_file}")"
+AWS_ACCESS_KEY_ID="$(cat "${access_key_file}")"
+AWS_SECRET_ACCESS_KEY="$(cat "${secret_key_file}")"
+export AWS_ACCESS_KEY_ID
+export AWS_SECRET_ACCESS_KEY
 export AWS_REGION="${region}"
 
 if [ "${action}" = "status" ]; then
@@ -68,7 +69,7 @@ aws lambda invoke \
   --region "${region}" \
   --payload "${payload}" \
   --cli-binary-format raw-in-base64-out \
-  "${response_file}" >/dev/null
+  "${response_file}" > /dev/null
 
 response="$(cat "${response_file}")"
 rm -f "${response_file}"
