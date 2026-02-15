@@ -723,7 +723,6 @@ in
 
     # Add CLAWDINATOR-specific dependencies to the upstream gateway unit.
     systemd.services.clawdinator = {
-      description = "CLAWDINATOR (Moltbot gateway)";
       after =
         [ "network.target" ]
         ++ lib.optional cfg.bootstrap.enable "clawdinator-bootstrap.service"
