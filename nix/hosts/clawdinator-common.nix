@@ -232,9 +232,9 @@ in
         schedule = "*:0/45"; # every 45 min — tokens expire after 1h
       };
 
-      selfUpdate.enable = true;
-      selfUpdate.flakePath = "/var/lib/clawd/repos/clawdinators";
-      selfUpdate.flakeHost = hostName;
+      # We deploy via CI (release.yml) pinned to a git SHA; avoid host-local
+      # `nix flake update` drift.
+      selfUpdate.enable = false;
 
       githubSync.enable = true;
       githubSync.org = "openclaw";
