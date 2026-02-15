@@ -117,6 +117,9 @@ Canned response guardrails:
 - Not allowed: announcing policy, roadmap, freezes, staffing changes, or any global status.
 - **Never close/comment on PRs assigned to maintainers** (hands-off).
 
+PR landing:
+- The old `/landpr` workflow is deprecated. Only run it if a maintainer explicitly invokes `/landpr`.
+
 ### GitHub Auth Refresh (no sudo)
 If GH auth expires mid-batch, run:
 - `clawdinator-gh-refresh`
