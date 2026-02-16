@@ -139,8 +139,11 @@ data "aws_iam_policy_document" "ami_importer" {
   statement {
     sid = "PrIntentBucketManage"
     actions = [
-      "s3:GetBucket*",
-      "s3:PutBucket*",
+      # S3 bucket-level config APIs are unfortunately a mix of GetBucket* and Get*.
+      # Use broad prefixes here; the resource is the bucket ARN so this does not grant
+      # object read/write on this bucket.
+      "s3:Get*",
+      "s3:Put*",
       "s3:DeleteBucketPolicy",
       "s3:ListBucket"
     ]
