@@ -111,11 +111,11 @@
         "nixpkgs": "nixpkgs_3"
       },
       "locked": {
-        "lastModified": 1772284050,
-        "narHash": "sha256-vJUUE2M88fOFn7U4cX6oxpUi0zHE9g/xO1AZcOP7IhY=",
+        "lastModified": 1772292955,
+        "narHash": "sha256-fhHtS3jXkQJQCTICGhiz5av2yedEtsniH16qlkr+KI8=",
         "owner": "openclaw",
         "repo": "nix-openclaw",
-        "rev": "7283f62107e6ff8fcfe819ca2a5301d712847582",
+        "rev": "a6cc27426071cdb07b9140ebbd8d1214753a59ae",
         "type": "github"
       },
       "original": {
