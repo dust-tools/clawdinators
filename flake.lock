@@ -108,14 +108,15 @@
         "flake-utils": "flake-utils",
         "home-manager": "home-manager_2",
         "nix-openclaw-tools": "nix-openclaw-tools",
-        "nixpkgs": "nixpkgs_3"
+        "nixpkgs": "nixpkgs_3",
+        "qmd": "qmd"
       },
       "locked": {
-        "lastModified": 1778053477,
-        "narHash": "sha256-FnpvIuvzG2bLlQdPuRSHRzyPa4rXM4xEtOVYBVCqtPk=",
+        "lastModified": 1778062078,
+        "narHash": "sha256-OW3b8hnHWYig96SGypsESc0iUHMwKOT21tI6mpJ8AyQ=",
         "owner": "openclaw",
         "repo": "nix-openclaw",
-        "rev": "d56fa8a75cb1b952ab924f10deac5764bbe6ee24",
+        "rev": "6a5352eba76de8f6868584245641a0cf9c8e8686",
         "type": "github"
       },
       "original": {
@@ -129,11 +130,11 @@
         "nixpkgs": "nixpkgs_2"
       },
       "locked": {
-        "lastModified": 1778052717,
-        "narHash": "sha256-EsQiDKKwBS8so+OzjPOZH+z+JOJeREAsOJ/fJAx3WCY=",
+        "lastModified": 1778060041,
+        "narHash": "sha256-tXWkN1VnwFG8XlRqW/e7VwbKnUfyU9tB7YDm9QHJXTY=",
         "owner": "openclaw",
         "repo": "nix-openclaw-tools",
-        "rev": "a0e7ac5ef1b6f5d1940e3efdb9ebad2dc04467f1",
+        "rev": "4c1cee3c7eaf68f9de0f756be1484534f5bb5f34",
         "type": "github"
       },
       "original": {
@@ -187,6 +188,32 @@
         "owner": "NixOS",
         "ref": "nixos-unstable",
         "repo": "nixpkgs",
+        "type": "github"
+      }
+    },
+    "qmd": {
+      "inputs": {
+        "flake-utils": [
+          "nix-openclaw",
+          "flake-utils"
+        ],
+        "nixpkgs": [
+          "nix-openclaw",
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1775429264,
+        "narHash": "sha256-bqIVaNRTa8H5vrw3RwsD7QdtTa0xNvRuEVzlzE1hIBQ=",
+        "owner": "tobi",
+        "repo": "qmd",
+        "rev": "65cd1b3fd02891d1ee0eefa751620918664fa321",
+        "type": "github"
+      },
+      "original": {
+        "owner": "tobi",
+        "ref": "v2.1.0",
+        "repo": "qmd",
         "type": "github"
       }
     },
