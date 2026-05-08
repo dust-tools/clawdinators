@@ -112,11 +112,11 @@
         "qmd": "qmd"
       },
       "locked": {
-        "lastModified": 1778236185,
-        "narHash": "sha256-fHi7SDvtcG1ErOU78l2i7Qq5oKMWkyrp+wDkcjuyLfU=",
+        "lastModified": 1778261455,
+        "narHash": "sha256-1exMB1AkptFwGxa3zjepV9AkZj4G0m/zJv0vmlulwC8=",
         "owner": "openclaw",
         "repo": "nix-openclaw",
-        "rev": "11d69d8a1c7524362b42be544fe1687c505ccbda",
+        "rev": "0b25e889a57fea7c26d66ea58618d62d36643fb5",
         "type": "github"
       },
       "original": {
